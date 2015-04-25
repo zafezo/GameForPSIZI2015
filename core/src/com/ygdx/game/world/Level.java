@@ -5,16 +5,20 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer.Cell;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Array;
+import com.mygdx.game.enteties.graphAPI.PathFinding;
 
 public class Level {
 	
-	public static Level instance = new Level();
-	private TiledMap map;
-	private  byte array[][];
+	public static final Level instance = new Level();
 	
-	private Level(){
-		
-	}
+	private  TiledMap map ;
+	private  byte arrayOfMap[][];
+	private byte numberOfNodes;
+	private PathFinding pathFinding;
+	
+	private Level (){}
 	
 	public  TiledMap getLevelMap (int level){
 		TmxMapLoader loader = new TmxMapLoader();	
@@ -32,38 +36,52 @@ public class Level {
 			map = loader.load(path);
 		}
 		
-		array = createPathingGraph();
+		arrayOfMap = createPathingGraph();
 		show();
+		
+		pathFinding = new PathFinding(arrayOfMap, numberOfNodes);
+		//pathFinding.showNodes();
+		
 		
 		return map;
 	}
 	
-	private byte[][] createPathingGraph(){
+	private  byte[][] createPathingGraph(){
 		TiledMapTileLayer layer = (TiledMapTileLayer) map.getLayers().get(0);
 		//byte array[][] = new byte [layer.getWidth()][ layer.getHeight()];
 		byte array[][] = new byte [ layer.getHeight()] [layer.getWidth()];
+		byte count = 0;
 		Cell cell;
 		for (int i = 0; i<layer.getHeight(); i++ ){
 			for (int j = 0; j<layer.getWidth(); j++){
 				cell = layer.getCell(j, i);
 				if (cell != null && cell.getTile() != null && cell.getTile()
 						.getProperties().containsKey("blocked")){
-					array[i][j] = 1;
+					array[i][j] = -1;
 				}else{
-					array[i][j] = 0;
+					if (array[i-1][j] == -1){
+						count++;
+						array[i][j] = count;
+					}else{
+						array[i][j] = -2;
+					}
+					
 				}
 			}
 		}
+		numberOfNodes = count;
 		return array;
 	}
+	
+
 	private  void show(){
-		//for (int i = array.length -1 ; i>=0; i-- ){
-		for (int i = 0; i<array.length; i++ ){
-			for (int j = 0; j<array[i].length; j++){
-				System.out.print(array[i][j]);
+		for (int i = 0; i<arrayOfMap.length; i++ ){
+			for (int j = 0; j<arrayOfMap[i].length; j++){
+				System.out.print(arrayOfMap[i][j] + "\t");
 			}
 			System.out.println();
 		}
+		System.out.println(numberOfNodes);	
 	}
 	
 }

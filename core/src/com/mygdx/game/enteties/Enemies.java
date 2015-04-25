@@ -7,11 +7,10 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 
 public class Enemies extends AbstractGameObject{	
 	
-	private boolean moving,jumping, mLeft, mRight;
-	private float destinathionX, destinathionY;
-	
-	private float width ;
-	private float height;
+	private boolean jumpLeft;
+	private boolean jumpRight;
+	private boolean fallRight;
+	private boolean fallLeft;
 	
 	public enum TypeOfEnemies{
 		
@@ -20,60 +19,92 @@ public class Enemies extends AbstractGameObject{
 	public Enemies(TiledMapTileLayer collisionLayer) {
 		super(collisionLayer);	
 		this.set(new Sprite(new Texture("img/player.png")));
-		width = getCollisonLayer().getTileWidth();
-		height = getCollisonLayer().getTileHeight();	
+		float width = getCollisonLayer().getTileWidth();
+		float height = getCollisonLayer().getTileHeight();	
 		setPosition(8 * width,2 * height);
 	}
 	
 	@Override
 	public void update(float deltaTime) {
 		super.update(deltaTime);
-		if (moving){
-			//Gdx.app.debug("Positioh of enemy", new Integer((int)(getX()/width)).toString());
-			if(getX() > destinathionX && mRight){
-				moving = false;
-				mRight = false;
-				stopMoving();
-			}else if(getX() < destinathionX && mLeft){
-				moving = false;
-				mLeft = false;
-				stopMoving();
-			}
-			if (jumping){
-				if (velocity.y <30){
-					if(getX() > destinathionX ){
-						jumping = false;
-						mLeft = true;
-						moveTo((int)(destinathionX / width));
-					}else if(getX() < destinathionX ){
-						jumping = false;
-						mRight = true;
-						moveTo((int)(destinathionX / width));
-					}
-				}
-			}
-		}
+			if(jumpLeft) jumpLeftScenario();	
+			if(jumpRight) jumpRightScenario();	
+			if(fallLeft) fallLeftScenario();	
+			if(fallRight) fallRightScenario();	
 	}
 	
+	private void fallLeftScenario() {
+		if(isCanJump()){			
+			stopMoving();
+			fallLeft = false;
+		}
+		
+	}
 	
+	public void fallLeft(){
+		setCanJump(false);
+		fallLeft = false;
+		moveLeft();
+	}
 
-	public void moveTo(int X){
-		moving = true;
-		destinathionX = X * width;
-		if (destinathionX > getX()){
-			moveRight();
-			mRight = true;
-		}else if (destinathionX < getX()){
-			moveLeft();
-			mLeft = true;
+	private void fallRightScenario() {
+		if(isCanJump()){			
+			stopMoving();
+			fallRight = false;
 		}
 	}
 	
-	public void jumpTo(int X, int Y){
-		jumping = moving = true;
-		destinathionX = X * width;
-		//destinathionY = Y * height;
-		jump();
+	public void fallRight(){
+		setCanJump(false);
+		fallRight = false;
+		moveRight();
+	}
+
+	private void jumpRightScenario() {
+		
+		//Gdx.app.debug("velocity.y",  (new Float(velocity.y)).toString());
+		if (velocity.y <= -10){
+			moveRight();
+			
+		};
+		if(isCanJump()){
+			//Gdx.app.debug("Enemy ","Grounded");
+			stopMoving();
+			jumpRight = false;
+			return;
+		}
+		
+	}
+
+	private void jumpLeftScenario(){					
+		//Gdx.app.debug("velocity.y",  (new Float(velocity.y)).toString());
+		if (velocity.y <= -10){
+			moveLeft();
+			
+		};	
+		if(isCanJump()){
+		//	Gdx.app.debug("Enemy ","Grounded");
+			stopMoving();
+			jumpLeft = false;
+			return;
+		}
+		
+	}
+	
+	public void jumpLeft(){
+		if (isCanJump()){
+			setCanJump(false);
+			 jump();
+		 }
+		 jumpLeft = true;
+	}
+	
+	public void jumpRight(){
+		if (isCanJump()){
+			setCanJump(false);
+			 jump();
+		 }
+		jumpRight = true;
 	}
 		
 

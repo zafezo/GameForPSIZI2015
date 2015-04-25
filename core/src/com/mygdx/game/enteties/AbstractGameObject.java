@@ -11,8 +11,9 @@ public abstract class AbstractGameObject extends Sprite{
 	
 	// ** physics properties **
 		protected Vector2 velocity;
-		private float speed = 102;
-		private float gravity = 110;
+		private boolean grounded;
+		private float speed = 105;
+		private float gravity = 118;
 		private float increment;
 		private TiledMapTileLayer collisionLayer;
 		
@@ -21,6 +22,7 @@ public abstract class AbstractGameObject extends Sprite{
 		
 	public  AbstractGameObject (TiledMapTileLayer collisionLayer){
 		velocity = new Vector2(0,0);
+		grounded = true;
 		canJump = true;
 		this.collisionLayer = collisionLayer;
 		leftFace = true;
@@ -42,7 +44,13 @@ public abstract class AbstractGameObject extends Sprite{
 		//apply gravity
 		velocity.y -= gravity * deltaTime;
 		
-		//clamp velocity
+		//clamp velocity.y
+		if (velocity.y > speed)
+			velocity.y = speed;
+		else
+			if (velocity.y < -speed)
+				velocity.y = -speed;
+		//clamp velocity.x
 		if (velocity.y > speed)
 			velocity.y = speed;
 		else
@@ -71,6 +79,7 @@ public abstract class AbstractGameObject extends Sprite{
 			collisionY = collidesTop();
 		}else{	//going down
 			collisionY = collidesBottom();
+			grounded = collisionY;
 			 setCanJump(collisionY);
 		}
 		
@@ -131,12 +140,12 @@ public abstract class AbstractGameObject extends Sprite{
 	}		
 	
 	public void moveLeft (){
-		velocity.x = -speed;
+		velocity.x += -speed;
 		leftFace = false;
 	}
 	
 	public void moveRight (){
-		velocity.x = speed;
+		velocity.x += speed;
 		leftFace = true;
 	}
 	
@@ -156,6 +165,9 @@ public abstract class AbstractGameObject extends Sprite{
 		return leftFace;
 	}
 	
+	public boolean isGrounded(){
+		return grounded;
+	}
 	
 	public Bullet fire (Bullet.TypeOfBullet type){
 		 return new Bullet(getX() + getWidth()/2, getY() + getHeight()/2,

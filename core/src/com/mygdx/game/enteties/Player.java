@@ -15,7 +15,7 @@ public class Player extends AbstractGameObject{
 		this.set(new Sprite(new Texture("img/player.png")));
 		width =  getCollisonLayer().getTileWidth();
 		height = getCollisonLayer().getTileHeight();	
-		setPosition(1 * width,2 * height);
+		setPosition(1 * width,1 * height);
 	}	
 	
 	

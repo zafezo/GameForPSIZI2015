@@ -89,16 +89,16 @@ public class WorldController extends InputAdapter implements InputProcessor{
 				bullets.add(player.fire(TypeOfBullet.Standrat));
 				break;
 			case Keys.V:
-				enemy.moveTo(10);
+				enemy.jumpRight();
 				break;
 			case Keys.C:
-				enemy.moveTo(6);
+				enemy.jumpLeft();
 				break;
 			case Keys.X:
-				enemy.jumpTo(7, 4);
+				enemy.fallLeft();
 				break;
 			case Keys.B:
-				enemy.jumpTo(10, 5);
+				enemy.fallRight();
 				break;
 		}
 		
