@@ -7,6 +7,7 @@ public class PathFinding {
 	private  byte arrayOfMap[][];
 	private Digraph graph;
 	private Vector2 listOfNodes[];
+	private BreadthFirstDirectedPaths breadth;
 	
 	public PathFinding(byte[][] arrayOfMap, byte numberOfNodes) {
 		super();
@@ -14,7 +15,11 @@ public class PathFinding {
 		graph = new Digraph(numberOfNodes+1);	
 		listOfNodes = new Vector2[numberOfNodes+1];
 		generateGraph();
+		breadth = new BreadthFirstDirectedPaths(graph);
+		breadth.setStartPoint(1);
+		System.out.println(breadth.pathTo(46));
 	}
+	
 	
 	private void generateGraph (){
 		for(int i = 1; i < arrayOfMap.length; i++){
@@ -25,7 +30,8 @@ public class PathFinding {
 				}
 			}
 		}
-		System.out.println(graph.toString());
+		//showNodes();
+		//System.out.println(graph.toString());
 	}
 
 	private void addNodesToGraph(int i, int j) {
@@ -41,38 +47,12 @@ public class PathFinding {
 			delta++;
 			}
 		}else if (i > 2){
-		//last platform
-		//find floor
+			//last platform
+			//find floor
 			//floor at one right block
-		delta = -1;
-			while((arrayOfMap[i+delta][j+1] < 0) && ((i+delta) > 0)){
-				delta--;
-			}
-			if((arrayOfMap[i+delta][j+1] > 0) && ((i+delta) > 0)){
-				graph.addEdge(arrayOfMap[i][j], arrayOfMap[i+delta][j+1] );
-				if(Math.abs(delta) < 3)
-				graph.addEdge( arrayOfMap[i+delta][j+1], arrayOfMap[i][j]);
-			}
-			//floor at two right block
-			delta = -1;
-			while((arrayOfMap[i+delta][j+2] < 0) && ((i+delta) > 0)){
-				delta--;
-			}
-			if((arrayOfMap[i+delta][j+2] > 0) && ((i+delta) > 0)){
-				graph.addEdge(arrayOfMap[i][j], arrayOfMap[i+delta][j+2] );
-				if(Math.abs(delta) < 3)
-				graph.addEdge(arrayOfMap[i+delta][j+2],arrayOfMap[i][j] );
-			}
-			//floor at three right block
-			delta = -1;
-			while((arrayOfMap[i+delta][j+3] < 0) && ((i+delta) > 0)){
-				delta--;
-			}
-			if((arrayOfMap[i+delta][j+3] > 0) && ((i+delta) > 0)){
-				graph.addEdge(arrayOfMap[i][j], arrayOfMap[i+delta][j+3] );
-				if(Math.abs(delta) < 3)
-				graph.addEdge(arrayOfMap[i+delta][j+3],arrayOfMap[i][j] );
-			}
+			findFlorAt(i, j, 1);
+			findFlorAt(i, j, 2);
+			findFlorAt(i, j, 3);	
 		}
 		
 		
@@ -87,46 +67,29 @@ public class PathFinding {
 			}
 		}else if (i>2){
 			//last platform
-		//find floor
+			//find floor
 			//floor at one left block
-		delta = -1;
-		while((arrayOfMap[i+delta][j-1] < 0) && ((i+delta) > 0)){
-					delta--;
-		}
-		if((arrayOfMap[i+delta][j-1] > 0) && ((i+delta) > 0)){
-					graph.addEdge(arrayOfMap[i][j], arrayOfMap[i+delta][j-1] );
-					if(Math.abs(delta) < 3)
-					graph.addEdge( arrayOfMap[i+delta][j-1], arrayOfMap[i][j]);
-			}
-		//floor at two left block
-		delta = -1;
-		while((arrayOfMap[i+delta][j-2] < 0) && ((i+delta) > 0)){
-					delta--;
-		}
-		if((arrayOfMap[i+delta][j-2] > 0) && ((i+delta) > 0)){
-					graph.addEdge(arrayOfMap[i][j], arrayOfMap[i+delta][j-2] );
-					if(Math.abs(delta) < 3)
-					graph.addEdge( arrayOfMap[i+delta][j-2],arrayOfMap[i][j]);
-			}
-		//floor at three left block
-		delta = -1;
-		while((arrayOfMap[i+delta][j-3] < 0) && ((i+delta) > 0)){
-					delta--;
-		}
-		if((arrayOfMap[i+delta][j-3] > 0) && ((i+delta) > 0)){
-					graph.addEdge(arrayOfMap[i][j], arrayOfMap[i+delta][j-3] );
-					if(Math.abs(delta) < 3)
-					graph.addEdge( arrayOfMap[i+delta][j-3],arrayOfMap[i][j]);
-			}
+			findFlorAt(i, j, -1);
+			findFlorAt(i, j, -2);
+			findFlorAt(i, j, -3);	
 		}
 		
 		
-		//add jump-Nodes
-		// three up-square are free
-		if(arrayOfMap[i+1][j] < 0 
-				&& arrayOfMap[i+2][j] < 0
-				 && arrayOfMap[i+3][j] < 0){
-			
+	}
+
+	private void findFlorAt(int i, int j,int distance){
+		int delta = 0;
+		boolean notPlatform = true;
+		while((arrayOfMap[i+delta][j+distance] < 0) && ((i+delta) > 0)){
+			if (arrayOfMap[i+delta][j+distance] == -1){
+				notPlatform = false;
+			}
+			delta--;			
+		}
+		if((arrayOfMap[i+delta][j+distance] > 0) && ((i+delta) > 0)){
+			graph.addEdge(arrayOfMap[i][j], arrayOfMap[i+delta][j+distance] );
+			if(Math.abs(delta) < 3 && notPlatform)
+			graph.addEdge( arrayOfMap[i+delta][j+distance], arrayOfMap[i][j]);
 		}
 	}
 
