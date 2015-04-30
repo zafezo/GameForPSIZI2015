@@ -9,26 +9,36 @@ public class BreadthFirstDirectedPaths {
     private int[] edgeTo;      // edgeTo[v] = last edge on shortest s->v path
     private int[] distTo;      // distTo[v] = length of shortest s->v path
     private Digraph G;
+    private LinkedList<Integer> path ;
     /**
      * Computes the shortest path from <tt>s</tt> and every other vertex in graph <tt>G</tt>.
      * @param G the digraph
      * @param s the source vertex
      */
     public BreadthFirstDirectedPaths(Digraph G) {
-        marked = new boolean[G.V()];
-        distTo = new int[G.V()];
-        edgeTo = new int[G.V()];
-        for (int v = 0; v < G.V(); v++) distTo[v] = INFINITY;
-       this.G = G;
+    	 this.G = G;
+    	clearDate();       
+    }
+    private void clearDate(){
+    	 marked = new boolean[G.V()];
+         distTo = new int[G.V()];
+         edgeTo = new int[G.V()];
+         path = new LinkedList<Integer>();
+         for (int v = 0; v < G.V(); v++) distTo[v] = INFINITY;
     }
 
-    public void setStartPoint(int s){
+    public void setCurrentPoint(int s){
     	bfs(G, s);
     }
     
     // BFS from single source
     private void bfs(Digraph G, int s) {
+    	clearDate();
         Queue<Integer> q = new Queue<Integer>();
+        distTo = new int[G.V()];
+        edgeTo = new int[G.V()];
+        for (int v = 0; v < G.V(); v++) distTo[v] = INFINITY;
+        System.out.println("bfs: " + s);
         marked[s] = true;
         distTo[s] = 0;
         q.enqueue(s);
@@ -66,15 +76,18 @@ public class BreadthFirstDirectedPaths {
         return distTo[v];
     }
     
-    public Iterable<Integer> pathTo(int v) {
+    public LinkedList<Integer> pathTo(int v) {
         if (!hasPathTo(v)) return null;
-        LinkedList<Integer> path = new LinkedList<Integer>();
+       path.clear();
         int x;
-        for (x = v; distTo[x] != 0; x = edgeTo[x])
-            path.push(x);
-        path.push(x);
+        for (x = v; distTo[x] != 0; x = edgeTo[x]){
+            path.push(x);          
+        }
+        //System.out.println(x);   
+        //path.push(x);
         return path;
-    }
+    } 
+  
 
   
 }

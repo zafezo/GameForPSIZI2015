@@ -43,6 +43,7 @@ public class WorldController extends InputAdapter implements InputProcessor{
 		Constants.mapTiledWidth = collsionLayer.getTileWidth();
 		player = new Player(collsionLayer);
 		enemy = new Enemies(collsionLayer);
+		enemy.folowObject(player);
 		Gdx.input.setInputProcessor(this);
 		initLevel();
 	}
@@ -87,19 +88,7 @@ public class WorldController extends InputAdapter implements InputProcessor{
 				break;
 			case Keys.Z:
 				bullets.add(player.fire(TypeOfBullet.Standrat));
-				break;
-			case Keys.V:
-				enemy.jumpRight();
-				break;
-			case Keys.C:
-				enemy.jumpLeft();
-				break;
-			case Keys.X:
-				enemy.fallLeft();
-				break;
-			case Keys.B:
-				enemy.fallRight();
-				break;
+				break;			
 		}
 		
 		return true;

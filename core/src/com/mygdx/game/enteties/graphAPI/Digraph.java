@@ -92,20 +92,6 @@ public class Digraph {
     }
 
     /**
-     * Returns the reverse of the digraph.
-     * @return the reverse of the digraph
-     */
-    public Digraph reverse() {
-        Digraph R = new Digraph(V);
-        for (int v = 0; v < V; v++) {
-            for (int w : adj(v)) {
-                R.addEdge(w, v);
-            }
-        }
-        return R;
-    }
-
-    /**
      * Returns a string representation of the graph.
      * This method takes time proportional to <em>E</em> + <em>V</em>.
      * @return the number of vertices <em>V</em>, followed by the number of edges <em>E</em>,  

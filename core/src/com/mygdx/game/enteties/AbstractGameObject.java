@@ -14,6 +14,7 @@ public abstract class AbstractGameObject extends Sprite{
 		private boolean grounded;
 		private float speed = 105;
 		private float gravity = 118;
+		private float speedX = 80;
 		private float increment;
 		private TiledMapTileLayer collisionLayer;
 		
@@ -51,11 +52,11 @@ public abstract class AbstractGameObject extends Sprite{
 			if (velocity.y < -speed)
 				velocity.y = -speed;
 		//clamp velocity.x
-		if (velocity.y > speed)
-			velocity.y = speed;
+		if (velocity.x > speedX)
+			velocity.x = speedX;
 		else
-			if (velocity.y < -speed)
-				velocity.y = -speed;
+			if (velocity.x < -speed)
+				velocity.x = -speedX;
 		
 		// calculate the increment for step in #collidesLeft() and #collidesRight()
 		increment = getWidth()/4;
@@ -140,12 +141,12 @@ public abstract class AbstractGameObject extends Sprite{
 	}		
 	
 	public void moveLeft (){
-		velocity.x += -speed;
+		velocity.x += -speedX;
 		leftFace = false;
 	}
 	
 	public void moveRight (){
-		velocity.x += speed;
+		velocity.x += speedX;
 		leftFace = true;
 	}
 	

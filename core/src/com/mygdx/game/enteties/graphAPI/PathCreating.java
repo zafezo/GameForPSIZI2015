@@ -1,25 +1,32 @@
 package com.mygdx.game.enteties.graphAPI;
 
+import java.util.LinkedList;
+
 import com.badlogic.gdx.math.Vector2;
 
-public class PathFinding {
+public class PathCreating{
 	
 	private  byte arrayOfMap[][];
 	private Digraph graph;
-	private Vector2 listOfNodes[];
-	private BreadthFirstDirectedPaths breadth;
+	private LinkedList<Vector2> listOfNodes;
+
 	
-	public PathFinding(byte[][] arrayOfMap, byte numberOfNodes) {
+	public  PathCreating(byte[][] arrayOfMap, byte numberOfNodes) {
 		super();
 		this.arrayOfMap = arrayOfMap;
 		graph = new Digraph(numberOfNodes+1);	
-		listOfNodes = new Vector2[numberOfNodes+1];
+		listOfNodes = new  LinkedList<Vector2>() ;
+		listOfNodes.push(new Vector2());
 		generateGraph();
-		breadth = new BreadthFirstDirectedPaths(graph);
-		breadth.setStartPoint(1);
-		System.out.println(breadth.pathTo(46));
 	}
 	
+	public Digraph getGraph() {
+		return graph;
+	}
+
+	public LinkedList<Vector2>getListOfNodes(){
+		return listOfNodes;
+	}
 	
 	private void generateGraph (){
 		for(int i = 1; i < arrayOfMap.length; i++){
@@ -30,8 +37,8 @@ public class PathFinding {
 				}
 			}
 		}
-		//showNodes();
-		//System.out.println(graph.toString());
+		showNodes();
+		System.out.println(graph.toString());
 	}
 
 	private void addNodesToGraph(int i, int j) {
@@ -94,12 +101,12 @@ public class PathFinding {
 	}
 
 	private void addNode(int i, int j) {
-		listOfNodes[arrayOfMap[i][j]] = new Vector2(j,i);
+		listOfNodes.add(arrayOfMap[i][j], new Vector2(j,i)); 
 	}
 	
-	public void showNodes(){
-		for (int i = 1 ; i<listOfNodes.length; i++){
-			System.out.println(i + " - " + (listOfNodes[i].x) + " " + (listOfNodes[i].y));
-		}
+	public void showNodes(){		
+		System.out.println(listOfNodes.toString());
 	}
+
+	
 }

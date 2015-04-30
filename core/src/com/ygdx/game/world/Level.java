@@ -1,13 +1,15 @@
 package com.ygdx.game.world;
 
+import java.util.LinkedList;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer.Cell;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.utils.Array;
-import com.mygdx.game.enteties.graphAPI.PathFinding;
+import com.mygdx.game.enteties.graphAPI.Digraph;
+import com.mygdx.game.enteties.graphAPI.PathCreating;
 
 public class Level {
 	
@@ -16,8 +18,38 @@ public class Level {
 	private  TiledMap map ;
 	private  byte arrayOfMap[][];
 	private byte numberOfNodes;
-	private PathFinding pathFinding;
+	private Digraph graph;
+	private LinkedList<Vector2> listOfNodes;
 	
+	public Digraph getGraph() {
+		return graph;
+	}
+	
+	public  LinkedList<Vector2> getListOfNodes() {
+		return listOfNodes;
+	}
+
+	public byte[][] getArrayOfMap() {
+		return arrayOfMap;
+	}
+	
+
+	public byte getNumberOfNodes() {
+		return numberOfNodes;
+	}
+	
+	public float getTiledWidth(){
+		TiledMapTileLayer layer = (TiledMapTileLayer) map.getLayers().get(0);
+		return layer.getTileWidth();
+	}
+	
+
+	public float getTiledHeight(){
+		TiledMapTileLayer layer = (TiledMapTileLayer) map.getLayers().get(0);
+		return layer.getTileHeight();
+	}
+	
+
 	private Level (){}
 	
 	public  TiledMap getLevelMap (int level){
@@ -39,9 +71,12 @@ public class Level {
 		arrayOfMap = createPathingGraph();
 		show();
 		
-		pathFinding = new PathFinding(arrayOfMap, numberOfNodes);
+		PathCreating pathFinding = new PathCreating(arrayOfMap, numberOfNodes);
+		listOfNodes = pathFinding.getListOfNodes();
+		graph = pathFinding.getGraph();
 		//pathFinding.showNodes();
-		
+		pathFinding = null;
+	
 		
 		return map;
 	}
@@ -81,7 +116,7 @@ public class Level {
 			}
 			System.out.println();
 		}
-		System.out.println(numberOfNodes);	
+		//System.out.println(numberOfNodes);	
 	}
 	
 }
