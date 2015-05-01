@@ -9,10 +9,12 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
+import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
-import com.mygdx.game.enteties.Bullet;
 import com.mygdx.game.enteties.Enemies;
-import com.mygdx.game.enteties.Bullet.TypeOfBullet;
+import com.mygdx.game.enteties.guns.Bullet;
+import com.mygdx.game.enteties.guns.Bullet.TypeOfBullet;
 import com.mygdx.game.enteties.Player;
 import com.mygdx.game.util.Constants;
 
@@ -26,7 +28,8 @@ public class WorldController extends InputAdapter implements InputProcessor{
 	public Enemies enemy;
 	private TiledMapTileLayer collsionLayer;
 	
-	public Array<Bullet> bullets;
+	public Array<Bullet> playerBullets;
+	public Array<Bullet> enemiesBullets;
 	
 
 	
@@ -35,8 +38,7 @@ public class WorldController extends InputAdapter implements InputProcessor{
 		init();
 	}
 
-	private void init() {
-		
+	private void init() {		
 		map = Level.instance.getLevelMap(1);	
 		collsionLayer = (TiledMapTileLayer) (map.getLayers().get(0));
 		Constants.mapWidth = collsionLayer.getWidth();
@@ -49,26 +51,78 @@ public class WorldController extends InputAdapter implements InputProcessor{
 	}
 
 	private void initLevel() {		
-		bullets = new Array<Bullet>();
+		playerBullets = new Array<Bullet>();
+		enemiesBullets = new Array<Bullet>();
 	}
 	
 	public void update (float deltaTime){
-		for (int i=0 ; i < bullets.size; i++){
-			Bullet bullet = bullets.get(i);
+		//update enemies
+		enemy.update(deltaTime);
+		updateEnemiesFiring(deltaTime);
+		updateEnemiesBullet(deltaTime);
+		
+		//update player
+		player.update(deltaTime);
+		updatePlayerBullet(deltaTime);
+		updatePlayerFiring(deltaTime);		
+		
+		
+	}
+	
+	
+	private void updatePlayerFiring(float deltaTime){
+		if(player.getGun().haveToFire(deltaTime)){
+			playerBullets.add(player.getGun().getBullet());
+		}
+	}
+	
+	private void updateEnemiesFiring(float deltaTime){
+		if(enemy.getGun().haveToFire(deltaTime)){
+			enemiesBullets.add(enemy.getGun().getBullet());
+		}
+	}
+	
+
+	private void updateEnemiesBullet(float deltaTime){
+		for (int i=0 ; i < enemiesBullets.size; i++){			
+			Bullet bullet = enemiesBullets.get(i);
+			if(bullet.isCollision(player)){
+				player.hit(enemy.getGun());
+				enemiesBullets.removeIndex(i);
+			}
 			if (bullet.isCollision()
-					|| bullet.isCollision(enemy)
 					|| bullet.isCollision(collsionLayer))
 			{
-				bullets.removeIndex(i);
+				enemiesBullets.removeIndex(i);
 				
 			}else{
 				bullet.update(deltaTime);
 			}
 		}
-		player.update(deltaTime);
-		enemy.update(deltaTime);
-		
 	}
+	
+	
+	
+	
+	private void updatePlayerBullet(float deltaTime){
+		for (int i=0 ; i < playerBullets.size; i++){			
+			Bullet bullet = playerBullets.get(i);
+			enemy.bulletAI(bullet);
+			if(bullet.isCollision(enemy)){
+				enemy.hit(enemy.getGun());
+				playerBullets.removeIndex(i);
+			}
+			if (bullet.isCollision()
+					|| bullet.isCollision(collsionLayer))
+			{
+				playerBullets.removeIndex(i);
+				
+			}else{
+				bullet.update(deltaTime);
+			}
+		}
+	}
+	
 	
 	@Override
 	public boolean keyDown(int keycode) {
@@ -87,7 +141,7 @@ public class WorldController extends InputAdapter implements InputProcessor{
 				player.moveRight();
 				break;
 			case Keys.Z:
-				bullets.add(player.fire(TypeOfBullet.Standrat));
+				player.getGun().setFiring(true);
 				break;			
 		}
 		
@@ -102,7 +156,10 @@ public class WorldController extends InputAdapter implements InputProcessor{
 		case Keys.A:			
 		case Keys.D:
 			player.stopMoving();
-			break;		
+			break;	
+		case Keys.Z:
+			player.getGun().setFiring(false);
+			break;	
 	}
 		return true;
 	}

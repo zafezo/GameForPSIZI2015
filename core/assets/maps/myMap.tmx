@@ -25,7 +25,7 @@
  </tileset>
  <layer name="background" width="30" height="12">
   <data encoding="base64" compression="zlib">
-   eJyrZmBgqB4gfJXOeNRe7LgKBx6u/iUmPEhJs0PBv9TMg7j00jpvD3Q4DwQGAPBOB7U=
+   eJyrZmBgqB4gfJXOeCjaWwPFI8G/NWh4OPkX3W/Y/EeMmsHsX0rjj5D+gfbvQGAA+mUHIA==
   </data>
  </layer>
  <layer name="foreground" width="30" height="12">

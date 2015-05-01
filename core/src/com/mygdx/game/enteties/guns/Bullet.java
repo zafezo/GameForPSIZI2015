@@ -1,4 +1,4 @@
-package com.mygdx.game.enteties;
+package com.mygdx.game.enteties.guns;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
@@ -11,37 +11,58 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer.Cell;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.mygdx.game.enteties.AbstractGameObject;
 import com.mygdx.game.util.Constants;
 import com.ygdx.game.world.WorldController;
 
 public class Bullet extends Sprite{
 	
-	private final float speed = 60;
-	private final static int size = 2;
+	private final float speed = 85;
+	private final static int size = 4;
 	
 	public TypeOfBullet type;
 	//private Sprite bullet;
 	public Vector2 velocity;
 	
 	public enum TypeOfBullet {
-		Standrat, Freeze
+		Standrat, Freeze, Poison;
+				
 	}
 	
 	public Bullet (float X, float Y, boolean directhion, TypeOfBullet type) {
-		super (createSprite());
+		super (createSprite(type));
 		this.type = type;		
 		//bullet = createSprite();	
-		// Direction == true ->
-		// Direction == false <-
-		velocity =  directhion ? new Vector2(speed ,0): 
-			 new Vector2(-speed ,0);
+		// Direction == true <-
+		// Direction == false ->
+		velocity =  directhion ? new Vector2(-speed ,0): 
+			new Vector2(speed ,0);
+		//Gdx.app.debug("Bullet Speed: ", speed +"");
 		//bullet.setPosition(X, Y);
 		setPosition(X, Y);
 	}
 	
-	private static Sprite createSprite(){
+	public TypeOfBullet getTypeOfBullet(){
+		return type;
+	}
+	
+	private static Sprite createSprite(TypeOfBullet type){
 		Pixmap pixmap = new Pixmap(size,size, Format.RGBA8888);
-		pixmap.setColor(Color.GREEN);
+		switch (type){
+		case Freeze:
+			pixmap.setColor(Color.BLUE);
+			break;
+		case Poison:
+			pixmap.setColor(Color.GREEN);
+			break;
+		case Standrat:
+			pixmap.setColor(Color.RED);
+			break;
+		default:
+			break;
+		
+		}
+		
 		pixmap.fill();
 		Sprite temp = new Sprite(new Texture(pixmap));		
 		return temp;		
@@ -63,7 +84,7 @@ public class Bullet extends Sprite{
 				return true;		
 		return false;
 	}
-	public boolean isCollision(Sprite ob){
+	public boolean isCollision(AbstractGameObject ob){
 		Rectangle recOb = ob.getBoundingRectangle();
 		Rectangle recBullet = getBoundingRectangle();
 		return recOb.overlaps(recBullet);			

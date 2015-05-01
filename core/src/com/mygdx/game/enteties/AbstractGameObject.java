@@ -6,41 +6,74 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer.Cell;
 import com.badlogic.gdx.math.Vector2;
+import com.mygdx.game.enteties.guns.AbstractGun;
+import com.mygdx.game.enteties.guns.Bullet;
+import com.mygdx.game.enteties.guns.StandartGun;
+import com.mygdx.game.enteties.guns.Bullet.TypeOfBullet;
 
 public abstract class AbstractGameObject extends Sprite{
 	
 	// ** physics properties **
 		protected Vector2 velocity;
-		private boolean grounded;
 		private float speed = 105;
 		private float gravity = 118;
-		private float speedX = 80;
+		private float speedX = 60;
 		private float increment;
 		private TiledMapTileLayer collisionLayer;
 		
 		private boolean canJump;
 		private boolean leftFace;
 		
+		private AbstractGun gun;
+		private Life life;
+		
 	public  AbstractGameObject (TiledMapTileLayer collisionLayer){
 		velocity = new Vector2(0,0);
-		grounded = true;
 		canJump = true;
+		life = new Life();
 		this.collisionLayer = collisionLayer;
 		leftFace = true;
 	}
 	
+	public AbstractGun getGun(){
+		return gun;
+	}
+	
+	public void setGun(TypeOfBullet type) {
+		switch (type) {
+		case Standrat:
+			gun = new StandartGun(this);
+			break;
+
+		default:
+			break;
+		}
+	}
+	
+	
+
 	@Override
 	public void draw(Batch batch) {
 		update (Gdx.graphics.getDeltaTime());
 		super.draw(batch);
 	}
 
+	
+	
 	public void update(float deltaTime) {
-		
-
+		life.update(deltaTime);
+			updateXMotion(deltaTime);
+			updateYMotion(deltaTime);		
+	}
+	
+	public void hit(AbstractGun enemyGun){
+		life.hit(enemyGun);
+		Gdx.app.debug("hit", life.getLifePoint() +"");
+	}
+	
+	private void updateYMotion(float deltaTime){
 		// save old position
-		float oldX = getX(), oldY = getY();
-		boolean collisionX = false;
+		float oldY = getY();
 		boolean collisionY = false;
 		//apply gravity
 		velocity.y -= gravity * deltaTime;
@@ -51,47 +84,55 @@ public abstract class AbstractGameObject extends Sprite{
 		else
 			if (velocity.y < -speed)
 				velocity.y = -speed;
-		//clamp velocity.x
-		if (velocity.x > speedX)
-			velocity.x = speedX;
-		else
-			if (velocity.x < -speed)
-				velocity.x = -speedX;
-		
-		// calculate the increment for step in #collidesLeft() and #collidesRight()
-		increment = getWidth()/4;
-		
-		setX(getX() + velocity.x * deltaTime);
-
-		collisionX = (velocity.x > 0) ? collidesRight() : collidesLeft();
-		
-		//Gdx.app.debug("collisonX",  (new Boolean(collisionX)).toString());
-		// move on x
-		if(collisionX) {
-			setX(oldX);
-			velocity.x = 0;
-		}
 		
 		
 		// calculate the increment for step in #collidesBottom() and #collidesTop()
-		increment = getHeight()/4;			
-		setY(getY() + velocity.y * deltaTime);
-		if (velocity.y > 0){ // going up
-			collisionY = collidesTop();
-		}else{	//going down
-			collisionY = collidesBottom();
-			grounded = collisionY;
-			 setCanJump(collisionY);
-		}
-		
-		//Gdx.app.debug("collisonY",  (new Boolean(collisionY)).toString());
-	
-		if(collisionY) {
-			setY(oldY);
-			velocity.y = 0;
-		}
-		
+				increment = getHeight()/4;			
+				setY(getY() + velocity.y * deltaTime);
+				if (velocity.y > 0){ // going up
+					collisionY = collidesTop();
+				}else{	//going down
+					collisionY = collidesBottom();
+					 setCanJump(collisionY);
+				}
+				
+				//Gdx.app.debug("collisonY",  (new Boolean(collisionY)).toString());
+			
+				if(collisionY) {
+					setY(oldY);
+					velocity.y = 0;
+				}
 	}
+	
+	private void updateXMotion(float deltaTime){
+		// save old position
+				float oldX = getX();
+				boolean collisionX = false;
+			
+				
+				//clamp velocity.x
+				if (velocity.x > speedX)
+					velocity.x = speedX;
+				else
+					if (velocity.x < -speedX)
+						velocity.x = -speedX;
+				
+				// calculate the increment for step in #collidesLeft() and #collidesRight()
+				increment = getWidth()/4;
+				
+				setX(getX() + velocity.x * deltaTime);
+
+				collisionX = (velocity.x > 0) ? collidesRight() : collidesLeft();
+				
+				//Gdx.app.debug("collisonX",  (new Boolean(collisionX)).toString());
+				// move on x
+				if(collisionX) {
+					setX(oldX);
+					velocity.x = 0;
+				}
+				
+	}
+	
 	
 	public TiledMapTileLayer getCollisonLayer (){
 		return collisionLayer;
@@ -142,15 +183,16 @@ public abstract class AbstractGameObject extends Sprite{
 	
 	public void moveLeft (){
 		velocity.x += -speedX;
-		leftFace = false;
+		leftFace = true;
 	}
 	
 	public void moveRight (){
 		velocity.x += speedX;
-		leftFace = true;
+		leftFace = false;
 	}
 	
 	public void jump (){
+		setCanJump(false);
 		velocity.y = speed;
 	}
 	
@@ -166,12 +208,8 @@ public abstract class AbstractGameObject extends Sprite{
 		return leftFace;
 	}
 	
-	public boolean isGrounded(){
-		return grounded;
+	public void setLeftFace (boolean face){
+		leftFace = face;
 	}
 	
-	public Bullet fire (Bullet.TypeOfBullet type){
-		 return new Bullet(getX() + getWidth()/2, getY() + getHeight()/2,
-				 getLeftFace(), type);
-	}
 }

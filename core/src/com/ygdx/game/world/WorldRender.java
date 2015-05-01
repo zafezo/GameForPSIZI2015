@@ -7,9 +7,9 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.utils.Disposable;
-import com.mygdx.game.enteties.Bullet;
 import com.mygdx.game.enteties.Enemies;
 import com.mygdx.game.enteties.Player;
+import com.mygdx.game.enteties.guns.Bullet;
 import com.mygdx.game.util.CameraHelper;
 import com.mygdx.game.util.Constants;
 
@@ -65,18 +65,34 @@ public class WorldRender implements Disposable{
 			//draw Player
 			player.draw(batch);
 			enemie.draw(batch);
-			//draw bullets
-			for (int i=0 ; i < worlController.bullets.size; i++){
-				worlController.bullets.get(i)
-						.render(batch);
-			}
+			drawEnemiesBullet(batch);
+			//draw Player's bullets
+			drawPlayerBullet(batch);
+			
+			
+			
 			
 		//render foreground
-			renderer.renderTileLayer((TiledMapTileLayer)worlController.map.getLayers()
-					.get("foreground"));
+			//renderer.renderTileLayer((TiledMapTileLayer)worlController.map.getLayers()
+				//	.get("foreground"));
 		batch.end();
 	
 	}
+	
+	private void drawPlayerBullet(Batch batch){
+		for (int i=0 ; i < worlController.playerBullets.size; i++){
+			worlController.playerBullets.get(i)
+					.render(batch);
+		}		
+	}
+	
+	private void drawEnemiesBullet(Batch batch){
+		for (int i=0 ; i < worlController.enemiesBullets.size; i++){
+			worlController.enemiesBullets.get(i)
+					.render(batch);
+		}		
+	}
+
 
 	private void updateGameCamera() {
 		float x = player.getX() + player.getWidth() / 2;
