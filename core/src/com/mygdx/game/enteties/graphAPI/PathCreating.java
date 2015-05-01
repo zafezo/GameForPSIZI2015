@@ -37,8 +37,8 @@ public class PathCreating{
 				}
 			}
 		}
-		showNodes();
-		System.out.println(graph.toString());
+		//showNodes();
+		//System.out.println(graph.toString());
 	}
 
 	private void addNodesToGraph(int i, int j) {

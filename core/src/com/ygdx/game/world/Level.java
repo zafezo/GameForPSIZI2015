@@ -69,7 +69,7 @@ public class Level {
 		}
 		
 		arrayOfMap = createPathingGraph();
-		show();
+		//show();
 		
 		PathCreating pathFinding = new PathCreating(arrayOfMap, numberOfNodes);
 		listOfNodes = pathFinding.getListOfNodes();

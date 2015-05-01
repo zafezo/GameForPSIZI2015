@@ -38,7 +38,7 @@ public class BreadthFirstDirectedPaths {
         distTo = new int[G.V()];
         edgeTo = new int[G.V()];
         for (int v = 0; v < G.V(); v++) distTo[v] = INFINITY;
-        System.out.println("bfs: " + s);
+       // System.out.println("bfs: " + s);
         marked[s] = true;
         distTo[s] = 0;
         q.enqueue(s);

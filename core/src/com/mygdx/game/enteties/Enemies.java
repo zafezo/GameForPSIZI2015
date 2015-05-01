@@ -6,6 +6,8 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.game.enteties.ai.EnemyAI;
+import com.mygdx.game.enteties.guns.Bullet;
+import com.mygdx.game.enteties.guns.Bullet.TypeOfBullet;
 
 public class Enemies extends AbstractGameObject{	
 	
@@ -27,6 +29,7 @@ public class Enemies extends AbstractGameObject{
 		setPosition(5 * width ,1 * height);
 		ai = new EnemyAI(this);
 		nextPosition = new Vector2(getX(), getY());
+		setGun(TypeOfBullet.Standrat);
 	}
 	
 	public void folowObject(AbstractGameObject ob){
@@ -39,16 +42,19 @@ public class Enemies extends AbstractGameObject{
 	@Override
 	public void update(float deltaTime) {
 		super.update(deltaTime);
+		ai.shootAI();
 		//System.out.println("update: "+ taskIsDone() + ai.changePosition());
 		if(taskIsDone()) {
-			if(ai.haveTogo() && ai.missionComplete()){
-				ai.setStart();
+			if((ai.haveTogo() && ai.missionComplete()) 
+					|| ai.objectChangePosition()){	
+					ai.setStart();
 			}else 
 			if (!ai.missionComplete())
 				newTask();
 		}			
 		else
 			goTo();		
+		
 			
 	}
 	
@@ -59,10 +65,10 @@ public class Enemies extends AbstractGameObject{
 			Gdx.app.debug("newTask: temp = ", temp + "");
 			return;
 		}
-		Gdx.app.debug("newTask: ", temp + "");	
+		//Gdx.app.debug("newTask: ", temp + "");	
 		temp.x *= width;
 		temp.y *= height;
-		Gdx.app.debug("newTask: ", temp + "");
+		//Gdx.app.debug("newTask: ", temp + "");
 		nextPosition = temp;
 		goTo();
 	}
@@ -122,6 +128,8 @@ public class Enemies extends AbstractGameObject{
 		return compareX && compareY ;
 	}
 	
-
+	public void bulletAI(Bullet bull){
+		ai.preventHintBulletAtEnemy(bull);
+	}
 
 }
