@@ -23,12 +23,15 @@ public abstract class AbstractGun {
 	}
 	
 	
-	protected Bullet creatBullet (Bullet.TypeOfBullet type){
+	protected Bullet creatBullet (){
 		 return new Bullet(getPositionX(), getPositionY(),
-				 firingOb.getLeftFace(), type);
+				 firingOb.getLeftFace(), type, instance);
 	}
 	
-	public abstract Bullet getBullet();
+	public  Bullet getBullet(){
+		return creatBullet();
+	};
+	
 	
 	private float getPositionX(){
 		//Gdx.app.debug("getPositionX: ", centerGunX + "");
@@ -69,7 +72,7 @@ public abstract class AbstractGun {
 	}		
 	
 	public boolean haveToFire(float deltaTime){
-		if(firing){
+		if(firing && !firingOb.getLife().isFreeze()){
 			firingTimer +=deltaTime;		
 			if(firingTimer > delayTimer){
 				firingTimer = 0;
@@ -80,9 +83,9 @@ public abstract class AbstractGun {
 	}
 
 
-	public float getInstance() {
-		return instance;
-	}
+	//public float getInstance() {
+		//return instance;
+	//}
 
 
 	public void setInstance(float instance) {

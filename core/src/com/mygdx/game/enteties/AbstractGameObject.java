@@ -1,6 +1,7 @@
 package com.mygdx.game.enteties;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
@@ -8,6 +9,8 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer.Cell;
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.game.enteties.guns.AbstractGun;
 import com.mygdx.game.enteties.guns.Bullet;
+import com.mygdx.game.enteties.guns.FreezeGun;
+import com.mygdx.game.enteties.guns.PoisonGun;
 import com.mygdx.game.enteties.guns.StandartGun;
 import com.mygdx.game.enteties.guns.Bullet.TypeOfBullet;
 
@@ -44,10 +47,21 @@ public abstract class AbstractGameObject extends Sprite{
 		case Standrat:
 			gun = new StandartGun(this);
 			break;
+		case Freeze:
+			gun = new FreezeGun(this);
+			break;
+			
+		case Poison:
+			gun = new PoisonGun(this);
+			break;
 
 		default:
 			break;
 		}
+	}
+	
+	public Life getLife(){
+		return life;
 	}
 	
 	
@@ -61,14 +75,16 @@ public abstract class AbstractGameObject extends Sprite{
 	
 	
 	public void update(float deltaTime) {
-		life.update(deltaTime);
+			life.update(deltaTime);		
 			updateXMotion(deltaTime);
-			updateYMotion(deltaTime);		
+			updateYMotion(deltaTime);
+			
+			
 	}
 	
-	public void hit(AbstractGun enemyGun){
-		life.hit(enemyGun);
-		Gdx.app.debug("hit", life.getLifePoint() +"");
+	public void hit(Bullet bullet){
+		life.hit(bullet);
+		//Gdx.app.debug("hit", life.getLifePoint() +"");
 	}
 	
 	private void updateYMotion(float deltaTime){
@@ -182,18 +198,24 @@ public abstract class AbstractGameObject extends Sprite{
 	}		
 	
 	public void moveLeft (){
+		if(!life.isFreeze()){
 		velocity.x += -speedX;
 		leftFace = true;
+		}
 	}
 	
 	public void moveRight (){
+		if(!life.isFreeze()){
 		velocity.x += speedX;
 		leftFace = false;
+		}
 	}
 	
 	public void jump (){
+		if(!life.isFreeze()){
 		setCanJump(false);
 		velocity.y = speed;
+		}
 	}
 	
 	public void stopMoving(){

@@ -1,7 +1,11 @@
 package com.mygdx.game.enteties;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.Pixmap.Format;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Vector2;
@@ -15,29 +19,30 @@ public class Enemies extends AbstractGameObject{
 	private float width;
 	private float height;
 	private EnemyAI ai;
-	
+	private int startLife = 100;	
 	
 	public enum TypeOfEnemies{
 		
 	}
 	
-	public Enemies(TiledMapTileLayer collisionLayer) {
+	public Enemies(TiledMapTileLayer collisionLayer, AbstractGameObject player) {
 		super(collisionLayer);	
 		this.set(new Sprite(new Texture("img/player.png")));
 		width = getCollisonLayer().getTileWidth();
 		height = getCollisonLayer().getTileHeight();	
 		setPosition(5 * width ,1 * height);
 		ai = new EnemyAI(this);
+		ai.setStart(player);
 		nextPosition = new Vector2(getX(), getY());
 		setGun(TypeOfBullet.Standrat);
 	}
 	
-	public void folowObject(AbstractGameObject ob){
-		if (ob instanceof Player){			
-			ai.setStart(ob);
-			newTask();
-		}
-	}	
+	//public void folowObject(AbstractGameObject ob){
+	//	if (ob instanceof Player){			
+		//	ai.setStart(ob);
+			//newTask();
+		//}
+	//}	
 
 	@Override
 	public void update(float deltaTime) {
@@ -58,6 +63,26 @@ public class Enemies extends AbstractGameObject{
 			
 	}
 	
+	@Override
+	public void draw(Batch batch){
+		super.draw(batch);
+		drawLife(batch);
+	}
+	
+	private void drawLife(Batch batch) {		
+		Pixmap pixmap = new Pixmap(startLife,4, Format.RGBA8888);
+		pixmap.setColor(Color.GRAY);
+		pixmap.drawRectangle(0, 0, startLife/4+2, 4);
+		pixmap.setColor(Color.RED);
+		pixmap.fillRectangle(1, 1, getLife().getLifePoint()/4, 2);
+		Sprite xpLine = new Sprite(new Texture(pixmap));
+		float x = getX() - 3;
+		float y = getY() + getHeight() + 2;
+		xpLine.setPosition(x, y);
+		xpLine.draw(batch);
+		
+	}
+
 	private void newTask() {
 		stopMoving();
 		Vector2 temp = ai.getNextPosition();

@@ -25,11 +25,15 @@ public class WorldController extends InputAdapter implements InputProcessor{
 	public  TiledMap map;	
 	public Player player;
 	private Game game;
-	public Enemies enemy;
+	//public Enemies enemy;
 	private TiledMapTileLayer collsionLayer;
+	
+	private int stage;
+	private float enemiesTimer;
 	
 	public Array<Bullet> playerBullets;
 	public Array<Bullet> enemiesBullets;
+	public Array<Enemies> enemies;
 	
 
 	
@@ -42,24 +46,38 @@ public class WorldController extends InputAdapter implements InputProcessor{
 		map = Level.instance.getLevelMap(1);	
 		collsionLayer = (TiledMapTileLayer) (map.getLayers().get(0));
 		Constants.mapWidth = collsionLayer.getWidth();
-		Constants.mapTiledWidth = collsionLayer.getTileWidth();
-		player = new Player(collsionLayer);
-		enemy = new Enemies(collsionLayer);
-		enemy.folowObject(player);
+		Constants.mapTiledWidth = collsionLayer.getTileWidth();				
 		Gdx.input.setInputProcessor(this);
 		initLevel();
 	}
 
-	private void initLevel() {		
+	private void initLevel() {	
+		player = new Player(collsionLayer);
+		//enemy = new Enemies(collsionLayer,player);
+		//enemy.folowObject(player);
 		playerBullets = new Array<Bullet>();
 		enemiesBullets = new Array<Bullet>();
+		enemies = new Array<Enemies>();
+		stage = 1;
+		enemiesTimer = 0;
+		initEnemies();
 	}
 	
+	private void initEnemies() {
+		enemies.add(new Enemies(collsionLayer, player));
+		//for(int i = 0 ; i < Constants.numberOfEnemies[stage]; i++){
+			//enemies.add(new Enemies(collsionLayer, player));
+		//}
+		
+	}
+
 	public void update (float deltaTime){
 		//update enemies
-		enemy.update(deltaTime);
-		updateEnemiesFiring(deltaTime);
+		updateEnemies(deltaTime);
+	//	enemy.update(deltaTime);
+	//	updateEnemiesFiring(deltaTime);
 		updateEnemiesBullet(deltaTime);
+		updateNumberOfEnemies(deltaTime);
 		
 		//update player
 		player.update(deltaTime);
@@ -69,14 +87,43 @@ public class WorldController extends InputAdapter implements InputProcessor{
 		
 	}
 	
+		
 	
+	
+	private void updateNumberOfEnemies(float deltaTime) {
+		enemiesTimer +=deltaTime;
+		//if(enemiesTimer > Constants.numberOfEnemies[stage]*2){
+		if(enemiesTimer > 4){
+			enemiesTimer = 0;
+			if(enemies.size < 6)
+			initEnemies();
+		};
+		
+		for(int i = 0; i< enemies.size; i++){
+			Enemies enemy = enemies.get(i);
+			if(enemy.getLife().isDead()){
+				enemies.removeIndex(i);
+				}
+		}
+		
+		
+	}
+
+	private void updateEnemies(float deltaTime) {
+		for(Enemies enemy: enemies){
+			enemy.update(deltaTime);
+			updateEnemiesFiring(deltaTime, enemy);
+		}
+		
+	}
+
 	private void updatePlayerFiring(float deltaTime){
 		if(player.getGun().haveToFire(deltaTime)){
 			playerBullets.add(player.getGun().getBullet());
 		}
 	}
 	
-	private void updateEnemiesFiring(float deltaTime){
+	private void updateEnemiesFiring(float deltaTime, Enemies enemy){
 		if(enemy.getGun().haveToFire(deltaTime)){
 			enemiesBullets.add(enemy.getGun().getBullet());
 		}
@@ -87,7 +134,7 @@ public class WorldController extends InputAdapter implements InputProcessor{
 		for (int i=0 ; i < enemiesBullets.size; i++){			
 			Bullet bullet = enemiesBullets.get(i);
 			if(bullet.isCollision(player)){
-				player.hit(enemy.getGun());
+				player.hit(bullet);
 				enemiesBullets.removeIndex(i);
 			}
 			if (bullet.isCollision()
@@ -107,13 +154,19 @@ public class WorldController extends InputAdapter implements InputProcessor{
 	private void updatePlayerBullet(float deltaTime){
 		for (int i=0 ; i < playerBullets.size; i++){			
 			Bullet bullet = playerBullets.get(i);
-			enemy.bulletAI(bullet);
-			if(bullet.isCollision(enemy)){
-				enemy.hit(enemy.getGun());
-				playerBullets.removeIndex(i);
+			boolean deleted = false;
+			updateEnemiesBulletAI(bullet);
+			for(Enemies enemy: enemies){
+				if(bullet.isCollision(enemy)){
+					enemy.hit(bullet);
+					playerBullets.removeIndex(i);
+					deleted = true;
+					break;
+				}
 			}
 			if (bullet.isCollision()
-					|| bullet.isCollision(collsionLayer))
+					|| bullet.isCollision(collsionLayer)
+					&& !deleted)
 			{
 				playerBullets.removeIndex(i);
 				
@@ -121,6 +174,13 @@ public class WorldController extends InputAdapter implements InputProcessor{
 				bullet.update(deltaTime);
 			}
 		}
+	}
+	
+	private void updateEnemiesBulletAI(Bullet bullet) {
+		for(Enemies enemy: enemies){
+			enemy.bulletAI(bullet);
+		}
+		
 	}
 	
 	

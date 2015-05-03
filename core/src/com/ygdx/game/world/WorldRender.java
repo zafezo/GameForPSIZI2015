@@ -6,21 +6,20 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
 import com.mygdx.game.enteties.Enemies;
 import com.mygdx.game.enteties.Player;
-import com.mygdx.game.enteties.guns.Bullet;
-import com.mygdx.game.util.CameraHelper;
 import com.mygdx.game.util.Constants;
 
 public class WorldRender implements Disposable{
 	private OrthogonalTiledMapRenderer renderer;
 	private OrthographicCamera camera;
-	public CameraHelper cameraHelper;
 	private Batch batch;
 	
 	private Player player;
-	private Enemies enemie;
+	//private Enemies enemie;
+	public Array<Enemies> enemies;
 	
 	
 	private WorldController worlController;
@@ -32,15 +31,12 @@ public class WorldRender implements Disposable{
 
 	private void init() {
 		
-		camera = new OrthographicCamera();
-		//cameraHelper = new CameraHelper();
-		//cameraHelper.applyTo(camera);
-		
+		camera = new OrthographicCamera();		
 		renderer = new OrthogonalTiledMapRenderer(worlController.map);
 		batch = renderer.getBatch();
 		player = worlController.player;
-		enemie = worlController.enemy;
-		//cameraHelper.setTarget(player);
+		//enemie = worlController.enemy;
+		enemies = worlController.enemies;		
 	}
 
 	public void render (){
@@ -62,14 +58,14 @@ public class WorldRender implements Disposable{
 			renderer.renderTileLayer((TiledMapTileLayer)worlController.map.getLayers()
 					.get("background"));
 			
+			//draw Enemies and Enemies's bullets
+			//enemie.draw(batch);
+			drawEnemies(batch);
+			drawEnemiesBullet(batch);
 			//draw Player
 			player.draw(batch);
-			enemie.draw(batch);
-			drawEnemiesBullet(batch);
 			//draw Player's bullets
-			drawPlayerBullet(batch);
-			
-			
+			drawPlayerBullet(batch);			
 			
 			
 		//render foreground
@@ -79,6 +75,13 @@ public class WorldRender implements Disposable{
 	
 	}
 	
+	
+	private void drawEnemies(Batch batch) {		
+		for(Enemies enemy: enemies){
+			enemy.draw(batch);
+		}
+	}
+
 	private void drawPlayerBullet(Batch batch){
 		for (int i=0 ; i < worlController.playerBullets.size; i++){
 			worlController.playerBullets.get(i)

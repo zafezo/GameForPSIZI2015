@@ -98,6 +98,9 @@ public class EnemyAI {
 	}
 	
 	public boolean missionComplete(){
+		if(path == null){
+			return true;
+		}
 		return path.isEmpty();
 	}
 	
@@ -121,7 +124,7 @@ public class EnemyAI {
 		return destinationOb.getX() > myOb.getX();
 	}
 	public void shootAI(){
-		if(destinationOb.isCanJump()){
+		if(destinationOb.isCanJump() ){
 			if((int)destinationOb.getY() == (int)myOb.getY()){
 				myOb.setLeftFace(!destinationIsRight());
 				if(!myOb.getGun().isFiring())

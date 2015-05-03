@@ -1,7 +1,7 @@
 package com.mygdx.game.enteties;
 
-import com.badlogic.gdx.Gdx;
 import com.mygdx.game.enteties.guns.AbstractGun;
+import com.mygdx.game.enteties.guns.Bullet;
 
 public class Life {
 	private float lifePoint;
@@ -20,18 +20,19 @@ public class Life {
 		freezeTimer = 0;
 	}
 	
-	public void hit(AbstractGun gun){
-		float instance = gun.getInstance();
-		switch (gun.getType()){
+	public void hit(Bullet bullet){
+		float instance = bullet.getInstance();
+		switch (bullet.getTypeOfBullet()){
+		case Standrat:
+			standartHit(instance);
+			break;
 		case Freeze:
 			freezeHit(instance);
 			break;
 		case Poison:
 			poisonHit(instance);
 			break;
-		case Standrat:
-			standartHit(instance);
-			break;
+		
 		default:
 			break;		
 		}
@@ -55,7 +56,7 @@ public class Life {
 
 	private void standartHit(float instance) {
 			lifePoint -=instance;
-			Gdx.app.debug("Hint", lifePoint +"");		
+			//Gdx.app.debug("Hint", lifePoint +"");		
 	}
 	
 	public void update(float deltaTime){
@@ -85,6 +86,10 @@ public class Life {
 
 	public boolean isDead() {
 		return dead;
+	}
+	
+	public void setLife(int lifePoint){
+		this.lifePoint = lifePoint;
 	}
 
 }

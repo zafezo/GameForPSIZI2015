@@ -18,18 +18,20 @@ import com.ygdx.game.world.WorldController;
 public class Bullet extends Sprite{
 	
 	private final float speed = 85;
-	private final static int size = 4;
+	private final static int size = 5;
 	
-	public TypeOfBullet type;
+	private TypeOfBullet type;
 	//private Sprite bullet;
 	public Vector2 velocity;
+	private float instance; 
 	
 	public enum TypeOfBullet {
 		Standrat, Freeze, Poison;
 				
 	}
 	
-	public Bullet (float X, float Y, boolean directhion, TypeOfBullet type) {
+	public Bullet (float X, float Y, boolean directhion, 
+			TypeOfBullet type, float instance) {
 		super (createSprite(type));
 		this.type = type;		
 		//bullet = createSprite();	
@@ -40,6 +42,15 @@ public class Bullet extends Sprite{
 		//Gdx.app.debug("Bullet Speed: ", speed +"");
 		//bullet.setPosition(X, Y);
 		setPosition(X, Y);
+		this.instance = instance;
+	}
+	
+	public void setInstance(float instance) {
+		this.instance = instance;
+	}
+	
+	public float getInstance() {
+		return instance;
 	}
 	
 	public TypeOfBullet getTypeOfBullet(){
@@ -62,8 +73,9 @@ public class Bullet extends Sprite{
 			break;
 		
 		}
-		
-		pixmap.fill();
+		//pixmap.drawCircle(0, 0, size);
+		pixmap.fillCircle(size/2, size/2, (int) (size/2));
+		//pixmap.fill();
 		Sprite temp = new Sprite(new Texture(pixmap));		
 		return temp;		
 	}
