@@ -13,11 +13,13 @@ import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector3;
 import com.mygdx.game.enteties.Player;
+import com.mygdx.game.util.AssetsStore;
+import com.mygdx.game.util.GamePreferences;
 import com.ygdx.game.world.Level;
 import com.ygdx.game.world.WorldController;
 import com.ygdx.game.world.WorldRender;
 
-public class PlayScreen extends AbstractScreen implements Screen {
+public class PlayScreen extends AbstractScreen  {
 
 
 	public PlayScreen(Game game) {
@@ -28,9 +30,8 @@ public class PlayScreen extends AbstractScreen implements Screen {
 	private WorldRender worldRenderer;
 	
 	@Override
-	public void show() {
-		
-
+	public void show() {	
+		GamePreferences.instance.load();
 		worldController = new WorldController(game);
 		worldRenderer = new WorldRender(worldController);
 		
