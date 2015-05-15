@@ -1,9 +1,9 @@
 package com.mygdx.game.enteties;
 
-import com.mygdx.game.enteties.guns.AbstractGun;
 import com.mygdx.game.enteties.guns.Bullet;
 
 public class Life {
+	
 	private float lifePoint;
 	private boolean freeze;
 	private boolean poison;
@@ -11,8 +11,8 @@ public class Life {
 	private float poisonTimer;
 	private float freezeTimer;
 	
-	public Life(){
-		lifePoint = 100;
+	public Life(int lifePoint){
+		this.lifePoint = lifePoint;
 		freeze = false;
 		poison = false;
 		dead = false;

@@ -1,6 +1,5 @@
 package com.mygdx.game.enteties.guns;
 
-import com.badlogic.gdx.Gdx;
 import com.mygdx.game.enteties.AbstractGameObject;
 import com.mygdx.game.enteties.guns.Bullet.TypeOfBullet;
 
@@ -18,7 +17,7 @@ public abstract class AbstractGun {
 	
 	public AbstractGun(AbstractGameObject ob){
 		firingOb = ob;
-		firingTimer = 0;
+		firingTimer = delayTimer;
 		firing = false;
 	}
 	
@@ -58,7 +57,7 @@ public abstract class AbstractGun {
 
 	public void setFiring(boolean firing) {
 		if(firing){
-			firingTimer = delayTimer;
+			//firingTimer = delayTimer;
 		}
 		this.firing = firing;
 	}

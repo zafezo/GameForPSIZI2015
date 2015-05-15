@@ -33,7 +33,7 @@ public abstract class AbstractGameObject extends Sprite{
 	public  AbstractGameObject (TiledMapTileLayer collisionLayer){
 		velocity = new Vector2(0,0);
 		canJump = true;
-		life = new Life();
+		life = new Life(100);
 		this.collisionLayer = collisionLayer;
 		leftFace = true;
 	}
@@ -69,6 +69,7 @@ public abstract class AbstractGameObject extends Sprite{
 	@Override
 	public void draw(Batch batch) {
 		update (Gdx.graphics.getDeltaTime());
+		setFlip(leftFace, false);
 		super.draw(batch);
 	}
 

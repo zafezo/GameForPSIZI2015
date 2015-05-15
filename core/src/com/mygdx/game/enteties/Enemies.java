@@ -20,7 +20,9 @@ public class Enemies extends AbstractGameObject{
 	private float height;
 	private EnemyAI ai;
 	private int startLife = 100;	
+	private int pointScore = 10;
 	
+
 	public enum TypeOfEnemies{
 		
 	}
@@ -107,6 +109,10 @@ public class Enemies extends AbstractGameObject{
 					
 	}
 	
+
+	public int getPointScore() {
+		return pointScore;
+	}
 
 
 	private void jumpTo(){
