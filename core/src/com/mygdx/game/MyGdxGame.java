@@ -3,16 +3,17 @@ package com.mygdx.game;
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
-import com.mygdx.game.screens.PlayScreen;
+import com.mygdx.game.screens.MenuScreen;
+import com.mygdx.game.util.AssetsStore;
 
 public class MyGdxGame extends Game {
 	
-	private Game game;
 	
 	@Override
 	public void create () {
+		AssetsStore.instance.init();
 		Gdx.app.setLogLevel(Application.LOG_DEBUG);
-		setScreen(new PlayScreen(game));
+		setScreen(new MenuScreen(this));
 	}
 
 	@Override

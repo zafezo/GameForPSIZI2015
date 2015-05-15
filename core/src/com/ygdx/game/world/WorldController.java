@@ -5,18 +5,15 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.InputProcessor;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
-import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.mygdx.game.enteties.Enemies;
-import com.mygdx.game.enteties.guns.Bullet;
-import com.mygdx.game.enteties.guns.Bullet.TypeOfBullet;
 import com.mygdx.game.enteties.Player;
+import com.mygdx.game.enteties.guns.Bullet;
+import com.mygdx.game.screens.MenuScreen;
 import com.mygdx.game.util.Constants;
+import com.mygdx.game.util.GamePreferences;
 
 public class WorldController extends InputAdapter implements InputProcessor{
 
@@ -28,7 +25,6 @@ public class WorldController extends InputAdapter implements InputProcessor{
 	//public Enemies enemy;
 	private TiledMapTileLayer collsionLayer;
 	
-	private int stage;
 	private float enemiesTimer;
 	
 	public Array<Bullet> playerBullets;
@@ -53,14 +49,14 @@ public class WorldController extends InputAdapter implements InputProcessor{
 
 	private void initLevel() {	
 		player = new Player(collsionLayer);
+		player.setScore(GamePreferences.instance.score);
 		//enemy = new Enemies(collsionLayer,player);
 		//enemy.folowObject(player);
 		playerBullets = new Array<Bullet>();
 		enemiesBullets = new Array<Bullet>();
 		enemies = new Array<Enemies>();
-		stage = 1;
 		enemiesTimer = 0;
-		initEnemies();
+		//initEnemies();
 	}
 	
 	private void initEnemies() {
@@ -81,6 +77,7 @@ public class WorldController extends InputAdapter implements InputProcessor{
 		
 		//update player
 		player.update(deltaTime);
+		isGAmeOver();
 		updatePlayerBullet(deltaTime);
 		updatePlayerFiring(deltaTime);		
 		
@@ -90,20 +87,28 @@ public class WorldController extends InputAdapter implements InputProcessor{
 		
 	
 	
+	private void isGAmeOver() {
+		if(player.getLife().isDead()){
+			backToMenu();
+		}
+		
+	}
+
 	private void updateNumberOfEnemies(float deltaTime) {
 		enemiesTimer +=deltaTime;
 		//if(enemiesTimer > Constants.numberOfEnemies[stage]*2){
 		if(enemiesTimer > 4){
 			enemiesTimer = 0;
-			if(enemies.size < 6)
+			if(enemies.size < 3)
 			initEnemies();
 		};
 		
 		for(int i = 0; i< enemies.size; i++){
 			Enemies enemy = enemies.get(i);
 			if(enemy.getLife().isDead()){
+				player.addScore(enemy.getPointScore());
 				enemies.removeIndex(i);
-				}
+			}
 		}
 		
 		
@@ -222,5 +227,10 @@ public class WorldController extends InputAdapter implements InputProcessor{
 			break;	
 	}
 		return true;
+	}
+	
+	private void backToMenu(){
+		GamePreferences.instance.saveScore(player.getScore());
+		game.setScreen(new MenuScreen(game));
 	}
 }
