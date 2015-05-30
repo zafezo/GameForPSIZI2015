@@ -5,6 +5,9 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Disposable;
 
 public class AssetsStore implements Disposable{
@@ -55,10 +58,29 @@ public class AssetsStore implements Disposable{
 	
 	public class GUI implements Disposable{
 		public final Texture button;
+		public final  Image standartGunImage; 
+		public final  Image freezeGunImage; 
+		public final  Image lifePointImage; 
 		
 		public GUI (){
 			
 			button = new Texture(Gdx.files.internal("img/button/button.png"));
+			Texture temp = new Texture(
+					Gdx.files.internal(Constants.standarGunImage));
+			 standartGunImage = new Image (new TextureRegionDrawable(
+					new TextureRegion(temp)));
+			temp = new Texture(
+					Gdx.files.internal(Constants.freezeGunImage));
+			 freezeGunImage = new Image (new TextureRegionDrawable(
+					new TextureRegion(temp)));
+			 
+			 temp = new Texture(
+						Gdx.files.internal(Constants.lifePointImage));
+				 lifePointImage = new Image (new TextureRegionDrawable(
+						new TextureRegion(temp)));
+				 standartGunImage.setScale(0.8f);
+				 freezeGunImage.setScale(0.8f);
+				 lifePointImage.setScale(0.8f);
 		}
 
 		@Override
@@ -70,4 +92,5 @@ public class AssetsStore implements Disposable{
 		
 		
 	}
+	
 }

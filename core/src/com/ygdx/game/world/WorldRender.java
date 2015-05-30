@@ -180,7 +180,8 @@ public class WorldRender implements Disposable{
 
 	public void resize(int width, int height) {
 		camera.viewportWidth = width / Constants.Scale_world;
-		camera.viewportHeight = height / Constants.Scale_world;		
+		camera.viewportHeight = height / Constants.Scale_world;	
+		
 	}
 	
 }

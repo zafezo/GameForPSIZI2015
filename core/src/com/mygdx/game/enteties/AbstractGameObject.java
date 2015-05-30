@@ -1,7 +1,6 @@
 package com.mygdx.game.enteties;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
@@ -9,11 +8,9 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer.Cell;
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.game.enteties.guns.AbstractGun;
 import com.mygdx.game.enteties.guns.Bullet;
-import com.mygdx.game.enteties.guns.FreezeGun;
-import com.mygdx.game.enteties.guns.PoisonGun;
-import com.mygdx.game.enteties.guns.StandartGun;
 import com.mygdx.game.enteties.guns.Bullet.TypeOfBullet;
-
+import com.mygdx.game.enteties.guns.FreezeGun;
+import com.mygdx.game.enteties.guns.StandartGun;
 public abstract class AbstractGameObject extends Sprite{
 	
 	// ** physics properties **
@@ -50,20 +47,19 @@ public abstract class AbstractGameObject extends Sprite{
 		case Freeze:
 			gun = new FreezeGun(this);
 			break;
-			
-		case Poison:
-			gun = new PoisonGun(this);
-			break;
 
 		default:
 			break;
 		}
 	}
 	
+	public void setAbstractGun(AbstractGun gun){
+		this.gun = gun;
+	}
+	
 	public Life getLife(){
 		return life;
 	}
-	
 	
 
 	@Override

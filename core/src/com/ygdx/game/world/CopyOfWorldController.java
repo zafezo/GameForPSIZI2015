@@ -11,15 +11,13 @@ import com.badlogic.gdx.utils.Array;
 import com.mygdx.game.enteties.Enemies;
 import com.mygdx.game.enteties.Player;
 import com.mygdx.game.enteties.guns.Bullet;
-import com.mygdx.game.enteties.guns.Bullet.TypeOfBullet;
 import com.mygdx.game.screens.MenuScreen;
-import com.mygdx.game.screens.ShopScreen;
 import com.mygdx.game.util.Constants;
 import com.mygdx.game.util.GamePreferences;
 
-public class WorldController extends InputAdapter implements InputProcessor{
+public class CopyOfWorldController extends InputAdapter implements InputProcessor{
 
-	private static final String TAG = WorldController.class.getName();
+	private static final String TAG = CopyOfWorldController.class.getName();
 	
 	public  TiledMap map;	
 	public Player player;
@@ -35,7 +33,7 @@ public class WorldController extends InputAdapter implements InputProcessor{
 	
 
 	
-	public WorldController (Game game){
+	public CopyOfWorldController (Game game){
 		this.game = game;
 		init();
 	}
@@ -208,14 +206,8 @@ public class WorldController extends InputAdapter implements InputProcessor{
 				player.moveRight();
 				break;
 			case Keys.Z:
-				setGunAndFire(TypeOfBullet.Standrat);
-				//player.getGun().setFiring(true);
-				break;
-			case Keys.X:
-				setGunAndFire(TypeOfBullet.Freeze);
-				//player.getGun().setFiring(true);
-				break;
-					
+				player.getGun().setFiring(true);
+				break;			
 		}
 		
 		return true;
@@ -230,23 +222,15 @@ public class WorldController extends InputAdapter implements InputProcessor{
 		case Keys.D:
 			player.stopMoving();
 			break;	
-		case Keys.Z:			
-		case Keys.X:
+		case Keys.Z:
 			player.getGun().setFiring(false);
 			break;	
-
-		
 	}
 		return true;
 	}
 	
-	private void setGunAndFire(TypeOfBullet gun){
-		player.setGun(gun);
-		player.getGun().setFiring(true);
-	}
-	
 	private void backToMenu(){
 		GamePreferences.instance.saveScore(player.getScore());
-		game.setScreen(new ShopScreen(game));
+		game.setScreen(new MenuScreen(game));
 	}
 }

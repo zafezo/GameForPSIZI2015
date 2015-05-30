@@ -4,6 +4,7 @@ public class Constants {
 	public static final float Scale_world = 2;
 	public static final float Time_delay_Shoot = 0.5f;
 	public static final String GUI_FONT = "img/font2.fnt";
+	public static final String Screen_FONT = "img/font.fnt";
 	public static  float mapWidth;
 	public static  float mapTiledWidth;
 	public static final String TEXTURE_ATLAS_UI =
@@ -20,6 +21,15 @@ public class Constants {
 
 			// GUI Height
 			public static final float VIEWPORT_GUI_HEIGHT = 480.0f;
+			
+			
 			// Game preferences file
-			public static final String PREFERENCES = "game.prefs";
+			public static final String Player_PREFERENCES = "game.prefs";
+			public static final String Levels_PREFERENCES = "levels.prefs";
+	public static final String standarGunImage = "img/standartGun.jpg";
+	public static final String freezeGunImage = "img/FreezeGun.jpg";
+	public static final String lifePointImage = "img/life.jpg";
+	public static final int maxLevel = 20;
+	
+
 }

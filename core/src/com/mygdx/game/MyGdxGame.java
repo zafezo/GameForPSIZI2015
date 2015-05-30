@@ -4,6 +4,7 @@ import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.mygdx.game.screens.MenuScreen;
+import com.mygdx.game.screens.ShopScreen;
 import com.mygdx.game.util.AssetsStore;
 
 public class MyGdxGame extends Game {
