@@ -1,7 +1,6 @@
 package com.mygdx.game.screens;
 
 import com.badlogic.gdx.Game;
-import com.mygdx.game.util.GamePreferences;
 import com.ygdx.game.world.WorldController;
 import com.ygdx.game.world.WorldRender;
 

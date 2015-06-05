@@ -13,7 +13,6 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.game.enteties.AbstractGameObject;
 import com.mygdx.game.util.Constants;
-import com.ygdx.game.world.WorldController;
 
 public class Bullet extends Sprite{
 	

@@ -57,14 +57,14 @@ public class AssetsStore implements Disposable{
 	}
 	
 	public class GUI implements Disposable{
-		public final Texture button;
+		//public final Texture button;
 		public final  Image standartGunImage; 
 		public final  Image freezeGunImage; 
 		public final  Image lifePointImage; 
 		
 		public GUI (){
 			
-			button = new Texture(Gdx.files.internal("img/button/button.png"));
+			//button = new Texture(Gdx.files.internal("img/button/button.png"));
 			Texture temp = new Texture(
 					Gdx.files.internal(Constants.standarGunImage));
 			 standartGunImage = new Image (new TextureRegionDrawable(
@@ -78,14 +78,11 @@ public class AssetsStore implements Disposable{
 						Gdx.files.internal(Constants.lifePointImage));
 				 lifePointImage = new Image (new TextureRegionDrawable(
 						new TextureRegion(temp)));
-				 standartGunImage.setScale(0.8f);
-				 freezeGunImage.setScale(0.8f);
-				 lifePointImage.setScale(0.8f);
 		}
 
 		@Override
 		public void dispose() {
-			button.dispose();
+			//button.dispose();
 			
 		}
 		

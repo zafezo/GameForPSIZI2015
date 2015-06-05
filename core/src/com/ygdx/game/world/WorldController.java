@@ -12,26 +12,23 @@ import com.mygdx.game.enteties.Enemies;
 import com.mygdx.game.enteties.Player;
 import com.mygdx.game.enteties.guns.Bullet;
 import com.mygdx.game.enteties.guns.Bullet.TypeOfBullet;
-import com.mygdx.game.screens.MenuScreen;
 import com.mygdx.game.screens.ShopScreen;
 import com.mygdx.game.util.Constants;
 import com.mygdx.game.util.GamePreferences;
 
 public class WorldController extends InputAdapter implements InputProcessor{
-
-	private static final String TAG = WorldController.class.getName();
 	
 	public  TiledMap map;	
 	public Player player;
 	private Game game;
 	//public Enemies enemy;
-	private TiledMapTileLayer collsionLayer;
-	
-	private float enemiesTimer;
-	
+	private TiledMapTileLayer collsionLayer;	
+	private float enemiesTimer;	
 	public Array<Bullet> playerBullets;
 	public Array<Bullet> enemiesBullets;
 	public Array<Enemies> enemies;
+	private float curentTime;
+	public int maxTime;
 	
 
 	
@@ -41,12 +38,13 @@ public class WorldController extends InputAdapter implements InputProcessor{
 	}
 
 	private void init() {		
-		map = Level.instance.getLevelMap(1);	
+		map = Level.instance.getLevelMap();	
 		collsionLayer = (TiledMapTileLayer) (map.getLayers().get(0));
 		Constants.mapWidth = collsionLayer.getWidth();
 		Constants.mapTiledWidth = collsionLayer.getTileWidth();				
 		Gdx.input.setInputProcessor(this);
 		initLevel();
+		
 	}
 
 	private void initLevel() {	
@@ -58,6 +56,8 @@ public class WorldController extends InputAdapter implements InputProcessor{
 		enemiesBullets = new Array<Bullet>();
 		enemies = new Array<Enemies>();
 		enemiesTimer = 0;
+		curentTime = 0;
+		maxTime = GamePreferences.instance.getTime();
 		//initEnemies();
 	}
 	
@@ -83,12 +83,19 @@ public class WorldController extends InputAdapter implements InputProcessor{
 		updatePlayerBullet(deltaTime);
 		updatePlayerFiring(deltaTime);		
 		
-		
+		curentTime += deltaTime;		
 	}
 	
 		
 	
 	
+	public int getTime() {
+		if(curentTime > maxTime){
+			maxTime = (int) curentTime;
+		}
+		return (int) curentTime;
+	}
+
 	private void isGAmeOver() {
 		if(player.getLife().isDead()){
 			backToMenu();
@@ -247,6 +254,7 @@ public class WorldController extends InputAdapter implements InputProcessor{
 	
 	private void backToMenu(){
 		GamePreferences.instance.saveScore(player.getScore());
+		GamePreferences.instance.saveTime(maxTime);		
 		game.setScreen(new ShopScreen(game));
 	}
 }

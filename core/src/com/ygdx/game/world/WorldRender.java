@@ -67,7 +67,20 @@ public class WorldRender implements Disposable{
 		batch.begin();
 		renderGuiScore(position);
 		renderLifePoint(position);
+		renderTime(position);
 		batch.end();
+		
+	}
+
+	private void renderTime(Vector3 position) {
+		float x = position.x+5;
+		float y = position.y-30;
+		//Assetes.instance.fonts.defaultSmall.draw(batch,"" + worlController.player.getScore(), x, y);
+		AssetsStore.instance.fonts.gameFont.draw(batch,
+				"" + worlController.getTime()+" / "+ worlController.maxTime
+				, x, y);
+		//font.draw(batch2,"" + worlController.player.getScore(), x + 75, y + 37);
+		
 		
 	}
 
@@ -87,9 +100,6 @@ public class WorldRender implements Disposable{
 	}
 
 	private void renderGuiScore(Vector3 position) {
-		//Gdx.app.debug("renderGuiScore camera", ""+camera.position);
-		//Gdx.app.debug("renderGuiScore cameraGui", ""+position);
-		//Gdx.app.debug("renderGuiScore player position", ""+player.getX() + "  "+player.getY());
 		float x = position.x+5;
 		float y = position.y-20;
 		//Assetes.instance.fonts.defaultSmall.draw(batch,"" + worlController.player.getScore(), x, y);

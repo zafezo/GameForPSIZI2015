@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="30" height="12" tilewidth="21" tileheight="21" nextobjectid="1">
+ <tileset firstgid="1" name="tileset" tilewidth="21" tileheight="21" spacing="2" margin="2">
+  <image source="tileset.png" trans="ffffff" width="692" height="692"/>
+  <tile id="121">
+   <properties>
+    <property name="blocked" value=""/>
+   </properties>
+  </tile>
+  <tile id="122">
+   <properties>
+    <property name="blocked" value=""/>
+   </properties>
+  </tile>
+  <tile id="123">
+   <properties>
+    <property name="blocked" value=""/>
+   </properties>
+  </tile>
+  <tile id="124">
+   <properties>
+    <property name="blocked" value=""/>
+   </properties>
+  </tile>
+ </tileset>
+ <layer name="background" width="30" height="12">
+  <data encoding="base64" compression="zlib">
+   eJyrZmBgqB4gfJXOeNTewW0vpW4l1V50teTaT6y9+NSQG17UMJNUu3HZS+s4H+j0PBAYACtxDE4=
+  </data>
+ </layer>
+ <layer name="foreground" width="30" height="12">
+  <data encoding="base64" compression="zlib">
+   eJxjYBgFo2AUjIJRMBgBAAWgAAE=
+  </data>
+ </layer>
+</map>

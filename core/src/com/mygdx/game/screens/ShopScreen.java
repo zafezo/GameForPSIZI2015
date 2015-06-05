@@ -60,7 +60,7 @@ public class ShopScreen extends AbstractScreen {
 				Constants.VIEWPORT_GUI_HEIGHT);
 				stack.add(createUI());
 				rebuildOptionsWindow();
-
+				
 		
 	}
 
@@ -133,7 +133,7 @@ public class ShopScreen extends AbstractScreen {
 
 			private void onCancleClicked() {
 				winOptions.setVisible(false);
-				
+				winOptions.setModal(false);
 			}
 		});	
 		table.add(CANCLEButton).space(40);		
@@ -223,13 +223,14 @@ public class ShopScreen extends AbstractScreen {
 		table.row();
 		table.add(addName());
 		table.row();
-		table.add(addImage());
+		table.add(addImage()).pad(10);
 		table.row();
 		table.add(addLevelPosition());
 		table.row();
 		table.add(addPrice());
 		table.row();
-		table.add(addButtons());
+		table.add(addButtons()).pad(12);
+		//table.debugAll();
 		return table;
 	}
 
@@ -253,7 +254,7 @@ public class ShopScreen extends AbstractScreen {
 			}
 
 			private void onBackClicked() {
-				game.setScreen(new MenuScreen(game));
+				game.setScreen(new MapSelectedScreen(game));
 				
 			}		
 		});	
@@ -297,12 +298,12 @@ public class ShopScreen extends AbstractScreen {
 		BitmapFont font = new BitmapFont(Gdx.files.internal(Constants.Screen_FONT));
 		Label.LabelStyle style = new Label.LabelStyle(font, Color.WHITE);
 		
-		Label temp = new Label(createLabelLevel(0)+"    ", style);
-		table.add(temp).uniform();
+		Label temp = new Label(createLabelLevel(0), style);
+		table.add(temp).padRight(10);
 		temp = new Label(createLabelLevel(1), style);
-		table.add(temp).uniform();
+		table.add(temp).padLeft(25);
 		temp = new Label(createLabelLevel(2), style);
-		table.add(temp).uniform();
+		table.add(temp).padLeft(25);
 		return table;
 	}
 	
@@ -341,19 +342,19 @@ public class ShopScreen extends AbstractScreen {
 		Table table = new Table();
 		BitmapFont font = new BitmapFont(Gdx.files.internal(Constants.Screen_FONT));
 		Label.LabelStyle style = new Label.LabelStyle(font, Color.WHITE);
-		Label temp = new Label("Standart Gun   ", style);
-		table.add(temp).uniform();
-		temp = new Label("Freeze Gun ", style);
-		table.add(temp).uniform();
+		Label temp = new Label("Standart Gun", style);
+		table.add(temp).padLeft(20).uniform();
+		temp = new Label("Freeze Gun", style);
+		table.add(temp).padLeft(20).uniform();
 		temp = new Label("Life Point", style);
-		table.add(temp).uniform();
+		table.add(temp).padLeft(20).uniform();
 		return table;
 	}
 
 
 	private Actor addImage() {
 		Table table = new Table();
-		
+		int size = 200;
 		// add Image of Life
 		Image standartGunIage = AssetsStore.instance.gui.standartGunImage; 
 		standartGunIage.addListener(new ClickListener() {
@@ -364,7 +365,7 @@ public class ShopScreen extends AbstractScreen {
 		    }
 		});
 		
-		table.add(standartGunIage);
+		table.add(standartGunIage).pad(10).prefSize(size);
 		
 		// add Image of Standart Gun
 		Image freezeGunIage = AssetsStore.instance.gui.freezeGunImage;
@@ -375,7 +376,7 @@ public class ShopScreen extends AbstractScreen {
 			        return true;
 			    }
 			});
-		 table.add(freezeGunIage);
+		 table.add(freezeGunIage).pad(10).prefSize(size);
 		 
 		 //add image of Freeze Gun
 		 Image  lifePointImage = AssetsStore.instance.gui.lifePointImage;
@@ -387,7 +388,7 @@ public class ShopScreen extends AbstractScreen {
 				        return true;
 				    }
 				});
-			 table.add(lifePointImage);
+			 table.add(lifePointImage).pad(10).prefSize(size);
 		return table;
 	}
 
@@ -396,7 +397,8 @@ public class ShopScreen extends AbstractScreen {
 	private void onImageClicked(int i) {
 		id = i;
 		rebuildOptionsWindow();
-		winOptions.setVisible(true);		
+		winOptions.setVisible(true);	
+		winOptions.setModal(true);
 	}
 
 	@Override

@@ -1,17 +1,11 @@
 package com.mygdx.game.enteties.ai;
 
 import java.util.LinkedList;
-import java.util.Stack;
 
-import javax.swing.text.StyledEditorKit.BoldAction;
-
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.game.enteties.AbstractGameObject;
-import com.mygdx.game.enteties.Enemies;
 import com.mygdx.game.enteties.graphAPI.BreadthFirstDirectedPaths;
-import com.mygdx.game.enteties.graphAPI.Digraph;
 import com.mygdx.game.enteties.guns.Bullet;
 import com.ygdx.game.world.Level;
 

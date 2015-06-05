@@ -2,7 +2,6 @@ package com.ygdx.game.world;
 
 import java.util.LinkedList;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer.Cell;
@@ -10,6 +9,7 @@ import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.game.enteties.graphAPI.Digraph;
 import com.mygdx.game.enteties.graphAPI.PathCreating;
+import com.mygdx.game.screens.MapSelectedScreen;
 
 public class Level {
 	
@@ -52,17 +52,9 @@ public class Level {
 
 	private Level (){}
 	
-	public  TiledMap getLevelMap (int level){
+	public  TiledMap getLevelMap (){
 		TmxMapLoader loader = new TmxMapLoader();	
-		String path = null;
-		switch (level){
-			case 1:
-				path = "maps/myMap.tmx";
-				break;
-				
-			default:
-				Gdx.app.debug(Level.class.getName(), "Wrong number of level");				
-		}
+		String path = "maps/map" + MapSelectedScreen.currentLevelIndex + ".tmx";;
 		
 		if (path != null){
 			map = loader.load(path);

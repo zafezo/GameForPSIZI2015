@@ -80,7 +80,7 @@ public class MenuScreen extends AbstractScreen {
 	}
 
 	protected void onPlayClicked() {
-		game.setScreen(new ShopScreen(game));
+		game.setScreen(new MapSelectedScreen(game));
 		
 	}
 

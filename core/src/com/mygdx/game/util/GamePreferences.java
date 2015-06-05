@@ -1,14 +1,11 @@
 package com.mygdx.game.util;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
+import com.mygdx.game.screens.MapSelectedScreen;
 
 public class GamePreferences {
 	public static final GamePreferences instance =
 				new GamePreferences();
-	public boolean sound;
-	public boolean music;
-	public float volSound;
-	public float volMusic;
 	//public int score;
 	private Preferences playerPrefs;
 	private Preferences levelsPrefs;
@@ -60,6 +57,15 @@ public class GamePreferences {
 
 	public void saveFreezeGunLevel(int point){
 		playerPrefs.putInteger("FreezeGun", point);
+	}
+	
+	public void saveTime(int timeSecond){
+		levelsPrefs.putInteger("time" + MapSelectedScreen.currentLevelIndex, timeSecond);
+		levelsPrefs.flush();
+	}
+	
+	public int getTime(){
+		return levelsPrefs.getInteger("time" + MapSelectedScreen.currentLevelIndex,0);
 	}
 
 	
