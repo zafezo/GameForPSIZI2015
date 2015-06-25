@@ -99,7 +99,7 @@ public class MapSelectedScreen extends AbstractScreen {
 				
 				table.setFillParent(true);
 				//table.pack();				
-		table.debugAll();
+		//table.debugAll();
 		return table;
 	}
 

@@ -56,9 +56,6 @@ public abstract class AbstractGun {
 	}
 
 	public void setFiring(boolean firing) {
-		if(firing){
-			//firingTimer = delayTimer;
-		}
 		this.firing = firing;
 	}
 
@@ -68,6 +65,7 @@ public abstract class AbstractGun {
 
 	public void setDelayTimer(float delayTimer) {
 		this.delayTimer = delayTimer;
+		firingTimer = delayTimer;
 	}		
 	
 	public boolean haveToFire(float deltaTime){

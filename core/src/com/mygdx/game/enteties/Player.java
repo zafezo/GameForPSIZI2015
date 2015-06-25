@@ -16,6 +16,7 @@ public class Player extends AbstractGameObject{
 	private  float width;
 	private  float height;
 	private int score;
+	private TypeOfBullet preveosGun;
 	
 	public Player ( TiledMapTileLayer collisionLayer){
 		super(collisionLayer);		
@@ -27,6 +28,7 @@ public class Player extends AbstractGameObject{
 		setGun(TypeOfBullet.Standrat);
 		score = 0;
 		getLife().setLife(100 + 40*GamePreferences.instance.getLifeLevel());
+		preveosGun = null;
 	}
 
 	public int getScore() {
@@ -44,21 +46,25 @@ public class Player extends AbstractGameObject{
 	@Override
 	public void setGun(TypeOfBullet type) {
 		AbstractGun gun = null;
-		switch (type) {
-		case Standrat:
-			gun = new StandartGun(this);
-			gun.setInstance(10*(2+GamePreferences.instance.getStandartGunLevel()));
-			gun.setDelayTimer(0.025f*(Constants.maxLevel - GamePreferences.instance.getStandartGunLevel()));
-			break;
-		case Freeze:
-			gun = new FreezeGun(this);
-			gun.setInstance(10*(2+GamePreferences.instance.getFreezeGunLevel()));
-			gun.setDelayTimer(0.025f*(Constants.maxLevel - GamePreferences.instance.getFreezeGunLevel()));
-			break;
-		default:
-			break;
+		if(preveosGun != type){
+			switch (type) {
+			case Standrat:
+				gun = new StandartGun(this);
+				gun.setInstance(10*(2+GamePreferences.instance.getStandartGunLevel()));
+				gun.setDelayTimer(0.025f*(Constants.maxLevel - GamePreferences.instance.getStandartGunLevel()));
+				break;
+			case Freeze:
+				gun = new FreezeGun(this);
+				gun.setInstance(10*(2+GamePreferences.instance.getFreezeGunLevel()));
+				gun.setDelayTimer(0.025f*(Constants.maxLevel - GamePreferences.instance.getFreezeGunLevel()));
+				break;
+			default:
+				break;
+			}
+			setAbstractGun(gun);
 		}
-		setAbstractGun(gun);
+		preveosGun = type;
+		
 	}
 	
 }

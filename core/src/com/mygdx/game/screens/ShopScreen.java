@@ -38,7 +38,8 @@ public class ShopScreen extends AbstractScreen {
 	private Window winOptions;
 	private Skin skinLibgdx;
 	private int id;
-	private boolean enable = true;;
+	private boolean enable = true;
+	private Stack optionStack;
 
 
 	@Override
@@ -47,8 +48,18 @@ public class ShopScreen extends AbstractScreen {
 					Constants.VIEWPORT_GUI_HEIGHT));
 		Gdx.input.setInputProcessor(stage);
 		skin = new Skin(Gdx.files.internal("uiskin.json"));
+	
+		addOptionStack();
 		rebuildStage();
 		
+	}
+
+	private void addOptionStack() {
+		optionStack = new Stack();	
+		optionStack.setSize((float)(Constants.VIEWPORT_GUI_WIDTH/1.8),
+				(float)(Constants.VIEWPORT_GUI_HEIGHT/1.8));
+		optionStack.setPosition((float)(Constants.VIEWPORT_GUI_WIDTH/4),
+				(float)(Constants.VIEWPORT_GUI_HEIGHT/4));
 	}
 
 	private void rebuildStage() {
@@ -56,16 +67,19 @@ public class ShopScreen extends AbstractScreen {
 				stage.clear();
 				Stack stack = new Stack();
 				stage.addActor(stack);
+				stage.addActor(optionStack);				
 				stack.setSize(Constants.VIEWPORT_GUI_WIDTH,
 				Constants.VIEWPORT_GUI_HEIGHT);
-				stack.add(createUI());
-				rebuildOptionsWindow();
-				
+				stack.add(createUI());	
+				stage.addActor(buildOptionsWindowLayer());
 		
 	}
 
 	private void rebuildOptionsWindow() {
-		stage.addActor(buildOptionsWindowLayer());
+		//stage.addActor(buildOptionsWindowLayer());
+		optionStack.clear();
+		optionStack.add(buildOptionsWindowLayer());
+		System.out.println("New Window");
 		
 	}
 
@@ -123,7 +137,7 @@ public class ShopScreen extends AbstractScreen {
 			}	
 		});	
 		table.add(upgrateButton).left().space(40);
-		TextButton CANCLEButton=new TextButton("CANCLE", skin);		
+		TextButton CANCLEButton=new TextButton("CANCEL", skin);		
 		CANCLEButton.pad(15);
 		CANCLEButton.addListener(new ChangeListener() {
 			@Override
@@ -180,6 +194,7 @@ public class ShopScreen extends AbstractScreen {
 
 	private Actor addLabelShop() {
 		String text = type(id);
+		System.out.println(text + " " + id);
 		Table table = new Table();
 		BitmapFont font = new BitmapFont(Gdx.files.internal(Constants.Screen_FONT));
 		Label.LabelStyle style = new Label.LabelStyle(font, Color.WHITE);
@@ -396,9 +411,17 @@ public class ShopScreen extends AbstractScreen {
 
 	private void onImageClicked(int i) {
 		id = i;
+		//rebuildStage();
 		rebuildOptionsWindow();
+		//loadText();
+		System.out.println("On Image Click");
 		winOptions.setVisible(true);	
 		winOptions.setModal(true);
+	}
+
+	private void loadText() {
+		// TODO Auto-generated method stub
+		
 	}
 
 	@Override
