@@ -12,6 +12,8 @@ import com.badlogic.gdx.math.Vector2;
 import com.mygdx.game.enteties.ai.EnemyAI;
 import com.mygdx.game.enteties.guns.Bullet;
 import com.mygdx.game.enteties.guns.Bullet.TypeOfBullet;
+import com.mygdx.game.screens.MapSelectedScreen;
+import com.mygdx.game.util.AssetsStore;
 
 public class Enemies extends AbstractGameObject{	
 	
@@ -29,22 +31,26 @@ public class Enemies extends AbstractGameObject{
 	
 	public Enemies(TiledMapTileLayer collisionLayer, AbstractGameObject player) {
 		super(collisionLayer);	
-		this.set(new Sprite(new Texture("img/player.png")));
+		this.set(createSprite());
 		width = getCollisonLayer().getTileWidth();
 		height = getCollisonLayer().getTileHeight();	
 		setPosition(5 * width ,1 * height);
+		setSize(width-1, height-2);
 		ai = new EnemyAI(this);
 		ai.setStart(player);
 		nextPosition = new Vector2(getX(), getY());
 		setGun(TypeOfBullet.Standrat);
 	}
 	
-	//public void folowObject(AbstractGameObject ob){
-	//	if (ob instanceof Player){			
-		//	ai.setStart(ob);
-			//newTask();
-		//}
-	//}	
+	
+
+	private Sprite createSprite() {	
+		
+		return new Sprite (AssetsStore.instance.eneties.enemies.
+				get(MapSelectedScreen.currentLevelIndex));
+	}
+
+
 
 	@Override
 	public void update(float deltaTime) {

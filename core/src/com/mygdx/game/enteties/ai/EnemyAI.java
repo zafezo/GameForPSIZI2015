@@ -120,7 +120,7 @@ public class EnemyAI {
 	public void shootAI(){
 		if(destinationOb.isCanJump() ){
 			if((int)destinationOb.getY() == (int)myOb.getY()){
-				myOb.setLeftFace(!destinationIsRight());
+				myOb.setLeftFace(destinationIsRight());
 				if(!myOb.getGun().isFiring())
 					myOb.getGun().setFiring(true);
 			}else
@@ -129,7 +129,7 @@ public class EnemyAI {
 	}
 	public boolean objectChangePosition() {
 		if(destinationOb.isCanJump()){
-			return parsePosition(destinationOb) == lastPosition;
+			return parsePosition(destinationOb) != lastPosition;
 		}
 			
 		return false;

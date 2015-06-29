@@ -9,7 +9,7 @@ public class FreezeGun extends AbstractGun {
 		super(ob);
 		super.setType(TypeOfBullet.Freeze);
 		super.setInstance(2);
-		setDelayTimer(0.5f);		
+		setDelayTimer(0.8f);		
 		setCenterGunX(ob.getWidth()/2);
 		//Gdx.app.debug("ob.getWidth(): ", ob.getWidth() + "");
 		setCenterGunY(ob.getHeight()/2);

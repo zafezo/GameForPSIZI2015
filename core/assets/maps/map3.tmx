@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.0" orientation="orthogonal" renderorder="right-down" width="40" height="12" tilewidth="21" tileheight="21" nextobjectid="1">
- <tileset firstgid="1" name="platform-fire1" tilewidth="21" tileheight="21">
-  <image source="platform-fire1.png" width="63" height="42"/>
+ <tileset firstgid="1" name="platform-wind" tilewidth="21" tileheight="21">
+  <image source="platform-wind.png" width="63" height="42"/>
   <tile id="0">
    <properties>
     <property name="blocked" value=""/>
@@ -28,12 +28,12 @@
    </properties>
   </tile>
  </tileset>
- <imagelayer name="Слой изображений 1" x="1" y="-1">
-  <image source="b-f.png"/>
+ <imagelayer name="image">
+  <image source="b-wind.png"/>
  </imagelayer>
  <layer name="background" width="40" height="12">
   <data encoding="base64" compression="zlib">
-   eJzNVAEKwCAIvGb7/5dXsFjIrMvWNkGC8NTr0gBgwz8tJI/JdwfuDU65NxnECC5OQuIF/dg7zmz+1aY51/eMTgLuDSyM1zJW/72ZXkZimTpefh4OHgtn/lXzWHMYqVEwsTpb81hyz7xXq4alBas/uyOf1v3r/dLTvOwXa6a0rt4Yy7Xmd34AZSgBlw==
+   eJzNVNEKwCAIXHP7/19eA4UjZqdujA58CD0760q2dSEaq8LTJ5NcpgZrW4994DGuKOdroBbD0eMMcBCiHHHyVsNmHvNMyxPPONi/wRrzq3jy1uRpiXovOw/jvOmdAfb3vBPtkdmjMk/VO/h+2Zkyz1fvZcaz9/sXMvfs/ZcsqrzxD4nWXgbLAcc=
   </data>
  </layer>
 </map>

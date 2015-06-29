@@ -18,6 +18,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
+import com.mygdx.game.util.AssetsStore;
 import com.mygdx.game.util.Constants;
 import com.mygdx.game.util.GamePreferences;
 
@@ -25,7 +26,7 @@ public class MapSelectedScreen extends AbstractScreen {
 
 	private Stage stage;
 	private Skin skin;
-	private Skin levelsSkin;
+	//private Skin levelsSkin;
 	private Array<Level> levels;
 	private TextButton buttonGo;
 	private TextButton buttonBack;
@@ -44,49 +45,47 @@ public class MapSelectedScreen extends AbstractScreen {
 					Constants.VIEWPORT_GUI_HEIGHT));;
 		Gdx.input.setInputProcessor(stage);
 		skin = new Skin(Gdx.files.internal("uiskin.json"));
-		levelsSkin = new Skin(Gdx.files.internal("img/customUI.json"));		
+	//	levelsSkin = new Skin(Gdx.files.internal("img/customUI.json"));		
 		addLevels();
 		rebuildStage();
 		
 	}
 
 	private void addLevels() {
-		
-		Texture jungleTex = new Texture(Gdx.files.internal(Constants.freezeGunImage));
-		Texture mountainsTex = new Texture(Gdx.files.internal(Constants.freezeGunImage));
-		
+				
 		// Populate level container
 		levels = new Array<Level>();
+		for (int i = 0; i <4; i++){
+			Texture texture = new Texture(Gdx.files.internal("maps/preview-"+i+".png"));
+			Level level = new Level("Map "+ (i+1), skin);
+			level.setImage( new Image(new TextureRegionDrawable(new TextureRegion(texture))));
+			levels.add(level);
+		}
 		
-		Level level1 = new Level("Level1", levelsSkin);
-		level1.setImage( new Image(new TextureRegionDrawable(new TextureRegion(jungleTex))));
-		
-		Level level2 = new Level("Level2", levelsSkin);
-		level2.setImage(new Image(new TextureRegionDrawable(new TextureRegion(mountainsTex))));
-		
-		Level level3 = new Level("Level3", levelsSkin);
-		level3.setImage(new Image(new TextureRegionDrawable(new TextureRegion(jungleTex))));
-		
-		levels.addAll(level1, level2, level3);
 	}
 
 	private void rebuildStage() {
 		// assemble stage for menu screen
 				stage.clear();
+				stage.addActor(background());
 				stage.addActor(createLayer());
 	}
 
 	
 
+	private Actor background() {
+		Image temp = AssetsStore.instance.gui.back_screen;
+		return temp ;
+	}
+
 	private Actor createLayer() {
 		Table table = new Table();
 		// Create table				
 				//Level selection menu
-				Label level_menu = new Label("Level Selection Menu", levelsSkin);
-			
+				Label level_menu = new Label("Map Selection Menu", skin);			
 				
 				table.row();
-				table.add(level_menu).padBottom(20f);
+				table.add(level_menu);
 				table.row();
 				table.add(addLabel());	
 				table.row();
@@ -107,7 +106,7 @@ public class MapSelectedScreen extends AbstractScreen {
 		Table table = new Table();
 		Level currentLevel = levels.get(currentLevelIndex);
 		table.add(currentLevel.getTitle()).pad(15f);
-		Label bestTime = new Label("Best Time: "+GamePreferences.instance.getTime(), levelsSkin);
+		Label bestTime = new Label("Best Time: "+GamePreferences.instance.getTime(), skin);
 		table.add(bestTime).pad(15f);
 		return table;
 	}
@@ -197,7 +196,7 @@ public class MapSelectedScreen extends AbstractScreen {
 	public void hide() {
 		stage.dispose();
 		skin.dispose();
-		levelsSkin.dispose();
+		//levelsSkin.dispose();
 	}
 	
 	public static class Level {

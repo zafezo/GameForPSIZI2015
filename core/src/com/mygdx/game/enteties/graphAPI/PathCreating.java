@@ -84,16 +84,24 @@ public class PathCreating{
 		
 	}
 
+	
+	private boolean validIndex(int i , int j){
+		return (i>0) && (i < arrayOfMap.length)
+					&& (j>0) && (j < arrayOfMap[0].length);
+	}
+	
 	private void findFlorAt(int i, int j,int distance){
 		int delta = 0;
 		boolean notPlatform = true;
-		while((arrayOfMap[i+delta][j+distance] < 0) && ((i+delta) > 0)){
+		while(validIndex(i+delta, j+distance)
+				&& (arrayOfMap[i+delta][j+distance] < 0) ){
 			if (arrayOfMap[i+delta][j+distance] == -1){
 				notPlatform = false;
 			}
 			delta--;			
 		}
-		if((arrayOfMap[i+delta][j+distance] > 0) && ((i+delta) > 0)){
+		if(validIndex(i+delta, j+distance)
+				&& (arrayOfMap[i+delta][j+distance] > 0)){
 			graph.addEdge(arrayOfMap[i][j], arrayOfMap[i+delta][j+distance] );
 			if(Math.abs(delta) < 3 && notPlatform)
 			graph.addEdge( arrayOfMap[i+delta][j+distance], arrayOfMap[i][j]);

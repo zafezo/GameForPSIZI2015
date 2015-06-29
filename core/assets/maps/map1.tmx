@@ -1,36 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="30" height="12" tilewidth="21" tileheight="21" nextobjectid="1">
- <tileset firstgid="1" name="tileset" tilewidth="21" tileheight="21" spacing="2" margin="2">
-  <image source="tileset.png" trans="ffffff" width="692" height="692"/>
-  <tile id="121">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="40" height="12" tilewidth="21" tileheight="21" nextobjectid="1">
+ <tileset firstgid="1" name="platform-st" tilewidth="21" tileheight="21">
+  <image source="platform-st.png" width="63" height="42"/>
+  <tile id="0">
    <properties>
     <property name="blocked" value=""/>
    </properties>
   </tile>
-  <tile id="122">
+  <tile id="1">
    <properties>
     <property name="blocked" value=""/>
    </properties>
   </tile>
-  <tile id="123">
+  <tile id="2">
    <properties>
     <property name="blocked" value=""/>
    </properties>
   </tile>
-  <tile id="124">
+  <tile id="3">
+   <properties>
+    <property name="blocked" value=""/>
+   </properties>
+  </tile>
+  <tile id="4">
    <properties>
     <property name="blocked" value=""/>
    </properties>
   </tile>
  </tileset>
- <layer name="background" width="30" height="12">
+ <imagelayer name="image">
+  <image source="b-s.png"/>
+ </imagelayer>
+ <layer name="background" width="40" height="12">
   <data encoding="base64" compression="zlib">
-   eJyrZmBgqB4gfJXOeNReys0iJh6Hqn/JTa9Dwb/UzIu49NSg4cEWv7RKF7TEAKE5Bf4=
-  </data>
- </layer>
- <layer name="foreground" width="30" height="12">
-  <data encoding="base64" compression="zlib">
-   eJxjYBgFo2AUjIJRMBgBAAWgAAE=
+   eJzNVAkKwCAM89j+/+U5WKF0PUeEBYIgMalWHe2fOBbPh18xGXeAe99jXxxg7+wetGy5js5U86rmVTBZtlcfKsvzzfSI99LS7z6nyJ90Up/NsYhE5InIz67Tcnb0j4j4C3p714fql/YeJTJ3sLpP5B8ZwXpPHi091Z31sfRy/gL4QAGo
   </data>
  </layer>
 </map>

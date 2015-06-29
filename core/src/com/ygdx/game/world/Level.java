@@ -14,10 +14,9 @@ import com.mygdx.game.screens.MapSelectedScreen;
 public class Level {
 	
 	public static final Level instance = new Level();
-	
 	private  TiledMap map ;
 	private  byte arrayOfMap[][];
-	private byte numberOfNodes;
+	private  byte numberOfNodes;
 	private Digraph graph;
 	private LinkedList<Vector2> listOfNodes;
 	
@@ -34,18 +33,18 @@ public class Level {
 	}
 	
 
-	public byte getNumberOfNodes() {
+	public short getNumberOfNodes() {
 		return numberOfNodes;
 	}
 	
 	public float getTiledWidth(){
-		TiledMapTileLayer layer = (TiledMapTileLayer) map.getLayers().get(0);
+		TiledMapTileLayer layer = (TiledMapTileLayer) map.getLayers().get(1);
 		return layer.getTileWidth();
 	}
 	
 
 	public float getTiledHeight(){
-		TiledMapTileLayer layer = (TiledMapTileLayer) map.getLayers().get(0);
+		TiledMapTileLayer layer = (TiledMapTileLayer) map.getLayers().get(1);
 		return layer.getTileHeight();
 	}
 	
@@ -74,7 +73,7 @@ public class Level {
 	}
 	
 	private  byte[][] createPathingGraph(){
-		TiledMapTileLayer layer = (TiledMapTileLayer) map.getLayers().get(0);
+		TiledMapTileLayer layer = (TiledMapTileLayer) map.getLayers().get(1);
 		//byte array[][] = new byte [layer.getWidth()][ layer.getHeight()];
 		byte array[][] = new byte [ layer.getHeight()] [layer.getWidth()];
 		byte count = 0;

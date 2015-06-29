@@ -3,10 +3,6 @@ package com.mygdx.game.enteties.graphAPI;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-/**
- *  @author Robert Sedgewick
- *  @author Kevin Wayne
- */
 public class Bag<Item> implements Iterable<Item> {
     private int N;               // number of elements in bag
     private Node<Item> first;    // beginning of bag

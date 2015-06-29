@@ -20,11 +20,11 @@ public class Player extends AbstractGameObject{
 	
 	public Player ( TiledMapTileLayer collisionLayer){
 		super(collisionLayer);		
-		this.set(new Sprite(new Texture("img/94.png")));
+		this.set(new Sprite(new Texture(Constants.player_Image)));
 		width =  getCollisonLayer().getTileWidth();
 		height = getCollisonLayer().getTileHeight();	
 		setPosition(1 * width,1 * height);
-		setSize(width, height-1);
+		setSize(width-1, height-2);
 		setGun(TypeOfBullet.Standrat);
 		score = 0;
 		getLife().setLife(100 + 40*GamePreferences.instance.getLifeLevel());

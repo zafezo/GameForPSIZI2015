@@ -66,6 +66,7 @@ public class ShopScreen extends AbstractScreen {
 		// assemble stage for menu screen
 				stage.clear();
 				Stack stack = new Stack();
+				stage.addActor(background());
 				stage.addActor(stack);
 				stage.addActor(optionStack);				
 				stack.setSize(Constants.VIEWPORT_GUI_WIDTH,
@@ -74,12 +75,16 @@ public class ShopScreen extends AbstractScreen {
 				stage.addActor(buildOptionsWindowLayer());
 		
 	}
+	
+	private Actor background() {
+		Image temp = AssetsStore.instance.gui.back_screen;
+		return temp ;
+	}
 
 	private void rebuildOptionsWindow() {
 		//stage.addActor(buildOptionsWindowLayer());
 		optionStack.clear();
 		optionStack.add(buildOptionsWindowLayer());
-		System.out.println("New Window");
 		
 	}
 
@@ -194,7 +199,6 @@ public class ShopScreen extends AbstractScreen {
 
 	private Actor addLabelShop() {
 		String text = type(id);
-		System.out.println(text + " " + id);
 		Table table = new Table();
 		BitmapFont font = new BitmapFont(Gdx.files.internal(Constants.Screen_FONT));
 		Label.LabelStyle style = new Label.LabelStyle(font, Color.WHITE);
@@ -251,10 +255,11 @@ public class ShopScreen extends AbstractScreen {
 
 	private Actor addCoins() {
 		Table table =  new Table();
+		table.add(AssetsStore.instance.eneties.icon_money_shop).pad(5);
 		BitmapFont font = new BitmapFont(Gdx.files.internal(Constants.Screen_FONT));
 		Label.LabelStyle style = new Label.LabelStyle(font, Color.WHITE);
-		Label temp = new Label("   "+ GamePreferences.instance.getScore(), style);
-		table.add(temp);
+		Label tempLabel = new Label(""+ GamePreferences.instance.getScore(), style);
+		table.add(tempLabel);
 		return table;
 	}
 
@@ -359,7 +364,7 @@ public class ShopScreen extends AbstractScreen {
 		Label.LabelStyle style = new Label.LabelStyle(font, Color.WHITE);
 		Label temp = new Label("Standart Gun", style);
 		table.add(temp).padLeft(20).uniform();
-		temp = new Label("Freeze Gun", style);
+		temp = new Label("Frozen Gun", style);
 		table.add(temp).padLeft(20).uniform();
 		temp = new Label("Life Point", style);
 		table.add(temp).padLeft(20).uniform();
@@ -411,17 +416,9 @@ public class ShopScreen extends AbstractScreen {
 
 	private void onImageClicked(int i) {
 		id = i;
-		//rebuildStage();
 		rebuildOptionsWindow();
-		//loadText();
-		System.out.println("On Image Click");
 		winOptions.setVisible(true);	
 		winOptions.setModal(true);
-	}
-
-	private void loadText() {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override

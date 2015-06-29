@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.Pixmap.Format;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.maps.tiled.TiledMapImageLayer;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector3;
@@ -18,16 +19,16 @@ import com.mygdx.game.enteties.Enemies;
 import com.mygdx.game.enteties.Player;
 import com.mygdx.game.util.AssetsStore;
 import com.mygdx.game.util.Constants;
+import com.mygdx.game.util.GamePreferences;
 
 public class WorldRender implements Disposable{
 	private OrthogonalTiledMapRenderer renderer;
 	private OrthographicCamera camera;
-	//private OrthographicCamera cameraGUI;
 	private Batch batch;
 	
 	private Player player;
-	//private Enemies enemie;
 	public Array<Enemies> enemies;
+	private int size = 11;
 	
 	
 	private WorldController worlController;
@@ -40,12 +41,9 @@ public class WorldRender implements Disposable{
 	private void init() {
 		
 		camera = new OrthographicCamera();
-		//cameraGUI = new OrthographicCamera();	
 		renderer = new OrthogonalTiledMapRenderer(worlController.map);
 		batch = renderer.getBatch();
-		//batch = new SpriteBatch();
 		player = worlController.player;
-		//enemie = worlController.enemy;
 		enemies = worlController.enemies;		
 	}
 
@@ -56,9 +54,6 @@ public class WorldRender implements Disposable{
 	}
 	
 	private void renderGUI() {
-		//batch.setProjectionMatrix(cameraGUI.combined);
-		//cameraGUI.position.set(0, 0, 0);
-		//cameraGUI.update();
 		Vector3 position = new Vector3(camera.position);
 		position.set(position.x - camera.viewportWidth/2,  
 				position.y+ camera.viewportHeight/2 
@@ -75,11 +70,11 @@ public class WorldRender implements Disposable{
 	private void renderTime(Vector3 position) {
 		float x = position.x+5;
 		float y = position.y-30;
-		//Assetes.instance.fonts.defaultSmall.draw(batch,"" + worlController.player.getScore(), x, y);
+		batch.draw(AssetsStore.instance.eneties.icon_time, x-2, y-8, 2, 0, size, size, 1, 1, 1);
 		AssetsStore.instance.fonts.gameFont.draw(batch,
 				"" + worlController.getTime()+" / "+ worlController.maxTime
-				, x, y);
-		//font.draw(batch2,"" + worlController.player.getScore(), x + 75, y + 37);
+				, x+10, y);
+		
 		
 		
 	}
@@ -88,13 +83,17 @@ public class WorldRender implements Disposable{
 		float x = position.x+5;
 		float y = position.y-15;
 		int startLife = 100;
+		float begin = 100 + 40*GamePreferences.instance.getLifeLevel();
 		Pixmap pixmap = new Pixmap(startLife+4,10, Format.RGBA8888);
 		pixmap.setColor(Color.GRAY);
 		pixmap.drawRectangle(0, 0, startLife+2, 8);
 		pixmap.setColor(Color.RED);
-		pixmap.fillRectangle(1, 1, player.getLife().getLifePoint(), 6);
+		pixmap.fillRectangle(1, 1, 
+				(int) ((player.getLife().getLifePoint())/begin*startLife), 
+				6);
 		Sprite xpLine = new Sprite(new Texture(pixmap));
-		xpLine.setPosition(x, y);
+		batch.draw(AssetsStore.instance.eneties.icon_hp, x-1, y+2, 2, 0, size, size, 1, 1, 1);
+		xpLine.setPosition(x+12, y);
 		xpLine.draw(batch);
 		
 	}
@@ -102,9 +101,9 @@ public class WorldRender implements Disposable{
 	private void renderGuiScore(Vector3 position) {
 		float x = position.x+5;
 		float y = position.y-20;
-		//Assetes.instance.fonts.defaultSmall.draw(batch,"" + worlController.player.getScore(), x, y);
-		AssetsStore.instance.fonts.gameFont.draw(batch,"" + worlController.player.getScore(), x, y);
-		//font.draw(batch2,"" + worlController.player.getScore(), x + 75, y + 37);
+		batch.draw(AssetsStore.instance.eneties.icon_money, x-1, y-6, 4, 4, size, size, 1, 1, 1);
+		AssetsStore.instance.fonts.gameFont.draw(batch,"" + worlController.player.getScore(), x+12, y+1);
+		
 		
 	}
 
@@ -119,6 +118,7 @@ public class WorldRender implements Disposable{
 		
 		batch.begin();
 		// render background
+			renderer.renderImageLayer((TiledMapImageLayer) worlController.map.getLayers().get(0));
 			renderer.renderTileLayer((TiledMapTileLayer)worlController.map.getLayers()
 					.get("background"));
 			
@@ -130,11 +130,6 @@ public class WorldRender implements Disposable{
 			player.draw(batch);
 			//draw Player's bullets
 			drawPlayerBullet(batch);			
-			
-			
-		//render foreground
-			//renderer.renderTileLayer((TiledMapTileLayer)worlController.map.getLayers()
-				//	.get("foreground"));
 		batch.end();
 	
 	}

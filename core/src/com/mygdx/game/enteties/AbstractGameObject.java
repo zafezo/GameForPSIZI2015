@@ -32,7 +32,7 @@ public abstract class AbstractGameObject extends Sprite{
 		canJump = true;
 		life = new Life(100);
 		this.collisionLayer = collisionLayer;
-		leftFace = true;
+		leftFace = false;
 	}
 	
 	public AbstractGun getGun(){
@@ -115,6 +115,9 @@ public abstract class AbstractGameObject extends Sprite{
 					setY(oldY);
 					velocity.y = 0;
 				}
+		if(getY() < 0)
+			setPosition(2 * getCollisonLayer().getTileWidth()
+					,1 * getCollisonLayer().getTileHeight());
 	}
 	
 	private void updateXMotion(float deltaTime){
@@ -197,14 +200,14 @@ public abstract class AbstractGameObject extends Sprite{
 	public void moveLeft (){
 		if(!life.isFreeze()){
 		velocity.x += -speedX;
-		leftFace = true;
+		leftFace = false;
 		}
 	}
 	
 	public void moveRight (){
 		if(!life.isFreeze()){
 		velocity.x += speedX;
-		leftFace = false;
+		leftFace = true;
 		}
 	}
 	

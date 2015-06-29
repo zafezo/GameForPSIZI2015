@@ -1,9 +1,6 @@
 package com.mygdx.game.enteties.guns;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.graphics.Pixmap.Format;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -12,13 +9,12 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer.Cell;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.game.enteties.AbstractGameObject;
+import com.mygdx.game.util.AssetsStore;
 import com.mygdx.game.util.Constants;
 
-public class Bullet extends Sprite{
+public class Bullet extends Sprite  {
 	
 	private final float speed = 85;
-	private final static int size = 5;
-	
 	private TypeOfBullet type;
 	//private Sprite bullet;
 	public Vector2 velocity;
@@ -34,14 +30,20 @@ public class Bullet extends Sprite{
 		super (createSprite(type));
 		this.type = type;		
 		//bullet = createSprite();	
-		// Direction == true <-
-		// Direction == false ->
-		velocity =  directhion ? new Vector2(-speed ,0): 
+		// Direction == false <-
+		// Direction == true ->
+		velocity =  !directhion ? new Vector2(-speed ,0): 
 			new Vector2(speed ,0);
 		//Gdx.app.debug("Bullet Speed: ", speed +"");
 		//bullet.setPosition(X, Y);
 		setPosition(X, Y);
 		this.instance = instance;
+		
+	}
+	
+	public void setImage(String path){
+		this.set(new Sprite(new Texture("img/piu/piu-"+path
+				+".png")));
 	}
 	
 	public void setInstance(float instance) {
@@ -57,25 +59,19 @@ public class Bullet extends Sprite{
 	}
 	
 	private static Sprite createSprite(TypeOfBullet type){
-		Pixmap pixmap = new Pixmap(size,size, Format.RGBA8888);
+		Texture pixmap = null;
 		switch (type){
 		case Freeze:
-			pixmap.setColor(Color.BLUE);
-			break;
-		case Poison:
-			pixmap.setColor(Color.GREEN);
+			pixmap = AssetsStore.instance.eneties.frozenPiu;
 			break;
 		case Standrat:
-			pixmap.setColor(Color.RED);
+			pixmap = AssetsStore.instance.eneties.standartPiu;
 			break;
 		default:
 			break;
-		
 		}
-		//pixmap.drawCircle(0, 0, size);
-		pixmap.fillCircle(size/2, size/2, (int) (size/2));
-		//pixmap.fill();
-		Sprite temp = new Sprite(new Texture(pixmap));		
+		
+		Sprite temp = new Sprite(pixmap);		
 		return temp;		
 	}
 	
